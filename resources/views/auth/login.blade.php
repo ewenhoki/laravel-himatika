@@ -31,7 +31,7 @@
                 <div class="form-content">
                     <div class="form-items">
                         <h3>{{ __('Login') }}</h3>
-                        <p>Silakan masuk untuk melakukan pembaharuan data atau request database.</p>
+                        <p>Silakan masuk untuk melakukan pembaharuan data atau permintaan database.</p>
                         @if (session('fail'))
                             <div class="alert alert-danger with-icon" role="alert">
                                 Email atau kata sandi salah.

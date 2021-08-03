@@ -10,14 +10,15 @@ class SiteController extends Controller
         return redirect('/login');
     }
 
-    public function adminDashboard(){
-        return view('dashboards.admin.index');
-    }
-
     public function check(){
         if(auth()->user()->role == 'Admin'){
             return redirect()->route('admin.index');
         }
-        return redirect()->route('login');
+        else if(auth()->user()->role == 'A'){
+            return redirect()->route('alumni.index');
+        }
+        else{
+            return redirect()->route('student.index');
+        }
     }
 }

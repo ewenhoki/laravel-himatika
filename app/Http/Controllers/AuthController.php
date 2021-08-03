@@ -21,9 +21,15 @@ class AuthController extends Controller
             if(auth()->user()->role == 'Admin'){
                 return redirect()->route('admin.index');
             }
+            else if(auth()->user()->role == 'A'){
+                return redirect()->route('alumni.index');
+            }
+            else{
+                return redirect()->route('student.index');
+            }
         }
         else{
-            return back()->with('fail','Login Failed !!');
+            return redirect()->route('login')->with('fail','Login Failed !!');
         }
     }
 

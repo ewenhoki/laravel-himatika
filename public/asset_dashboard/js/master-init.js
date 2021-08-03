@@ -16,8 +16,8 @@ $('.shutdown').click(function(){
 });
 $('.logout').click(function(){
     swal({   
-        title: "Logout ?",   
-        text: "Anda harus melakukan login ulang untuk masuk kembali.",   
+        title: "Keluar ?",   
+        text: "Anda harus masuk kembali untuk mengakses data.",   
         type: "warning",   
         showCancelButton: true,   
         confirmButtonColor: "#DD6B55",   
