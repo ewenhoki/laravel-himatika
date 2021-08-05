@@ -49,7 +49,7 @@
                                     </span>
                                     <div class="media-body">
                                         <p class="fs-14 mb-2">Total Mahasiswa</p>
-                                        <span class="title text-black font-w600">42</span>
+                                        <span class="title text-black font-w600">{{ $activestudent }}</span>
                                     </div>
                                 </div>
                                 <div class="progress" style="height:5px;">
@@ -69,7 +69,7 @@
                                     </span>
                                     <div class="media-body">
                                         <p class="fs-14 mb-2">Total Alumni</p>
-                                        <span class="title text-black font-w600">230</span>
+                                        <span class="title text-black font-w600">{{ $inactivestudent }}</span>
                                     </div>
                                 </div>
                                 <div class="progress" style="height:5px;">
@@ -159,9 +159,9 @@
                                                 </button>
                                                 <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
                                                     @if($user->role == 'M')
-                                                    <a class="dropdown-item change-alumni" href="javascript:void(0);" user-id="{{ $user->id }}" user-name="{{ $user->name }}">Ubah Menjadi Alumni</a>
+                                                    <a class="dropdown-item switch-alumni" href="javascript:void(0);" user-id="{{ $user->id }}" user-name="{{ $user->name }}">Ubah Menjadi Alumni</a>
                                                     @else
-                                                    <a class="dropdown-item change-student" href="javascript:void(0);" user-id="{{ $user->id }}" user-name="{{ $user->name }}">Ubah Menjadi Mahasiswa</a>
+                                                    <a class="dropdown-item switch-student" href="javascript:void(0);" user-id="{{ $user->id }}" user-name="{{ $user->name }}">Ubah Menjadi Mahasiswa</a>
                                                     @endif
                                                     @if(is_null($user->email_verified_at))
                                                     <a class="dropdown-item" href="{{ route('admin.verification', ['user'=>$user->id]) }}">Verifikasi</a>
@@ -185,9 +185,48 @@
 
 @section('footer')
 <script>
+    $('.switch-alumni').click(function(){
+        var user_id = $(this).attr('user-id');
+        var user_name = $(this).attr('user-name');
+        var url = "{{route('admin.switch.alumni', '')}}"+"/"+user_id;
+        swal({   
+            title: "Yakin ?",   
+            text: "Ubah role user dengan nama "+user_name+" menjadi alumni?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Ya",   
+            cancelButtonText: "Tidak",   
+        })
+        .then(function(WillDelete){
+            if(WillDelete.value){
+                window.location = url;
+            }
+        });
+    });
+    $('.switch-student').click(function(){
+        var user_id = $(this).attr('user-id');
+        var user_name = $(this).attr('user-name');
+        var url = "{{route('admin.switch.student', '')}}"+"/"+user_id;
+        swal({   
+            title: "Yakin ?",   
+            text: "Ubah role user dengan nama "+user_name+" menjadi mahasiswa?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Ya",   
+            cancelButtonText: "Tidak",   
+        })
+        .then(function(WillDelete){
+            if(WillDelete.value){
+                window.location = url;
+            }
+        });
+    });
     $('.delete-user').click(function(){
         var user_id = $(this).attr('user-id');
         var user_name = $(this).attr('user-name');
+        var url = "{{route('admin.delete', '')}}"+"/"+user_id;
         swal({   
             title: "Yakin ?",   
             text: "Hapus user dengan nama "+user_name+"?",   
@@ -199,7 +238,7 @@
         })
         .then(function(WillDelete){
             if(WillDelete.value){
-                window.location = "/admin/delete/"+user_id;
+                window.location = url;
             }
         });
     });
@@ -243,6 +282,28 @@
 @if(session('deleted'))
     <script>
         toastr.success("User berhasil dihapus!", "Berhasil", {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-top-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+        });
+    </script>
+@endif
+@if(session('switched'))
+    <script>
+        toastr.success("Berhasil mengganti role user!", "Berhasil", {
             timeOut: 5e3,
             closeButton: !0,
             debug: !1,

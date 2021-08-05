@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Generation;
+use App\Models\Activestudent;
+use App\Models\Inactivestudent;
 
 class AdminController extends Controller
 {
     public function index(){
         $users = User::all();
-        return view('dashboards.admin.index', compact(['users']));
+        $activestudent = Activestudent::count();
+        $inactivestudent = Inactivestudent::count();
+        return view('dashboards.admin.index', compact(['users','activestudent','inactivestudent']));
     }
 
     public function profile(){
@@ -30,7 +35,7 @@ class AdminController extends Controller
         $user = User::find(auth()->user()->id);
         $user->name = ucwords(strtolower(trim($request->name)));
         $user->phone = $request->phone;
-        $user->email = $request->email;
+        $user->email = strtolower(trim($request->email));
         $user->save();
         return redirect()->route('admin.profile')->with('success','Berhasil perbaharui data !');
     }
@@ -56,7 +61,42 @@ class AdminController extends Controller
     }
 
     public function deleteUser(User $user){
+        if($user->role == 'A'){
+            $generation = Generation::find($user->inactivestudent->generation_id);
+            $user->inactivestudent->delete();
+        }
+        else{
+            $generation = Generation::find($user->activestudent->generation_id);
+            $user->activestudent->delete();
+        }
+        if($generation->activestudents()->count() == 0 && $generation->inactivestudents()->count() == 0){
+            $generation->delete();
+        }
         $user->delete();
         return redirect()->route('admin.index')->with('deleted','success');
+    }
+
+    public function switchStudent(User $user){
+        $generation = $user->inactivestudent->generation_id;
+        $user->inactivestudent->delete();
+        $activestudent = Activestudent::create([
+            'user_id' => $user->id,
+            'generation_id' => $generation,
+        ]);
+        $user->role = 'M';
+        $user->save();
+        return redirect()->route('admin.index')->with('switched','success');
+    }
+
+    public function switchAlumni(User $user){
+        $generation = $user->activestudent->generation_id;
+        $user->activestudent->delete();
+        $inactivestudent = Inactivestudent::create([
+            'user_id' => $user->id,
+            'generation_id' => $generation,
+        ]);
+        $user->role = 'A';
+        $user->save();
+        return redirect()->route('admin.index')->with('switched','success');
     }
 }

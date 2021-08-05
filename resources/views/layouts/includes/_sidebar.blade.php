@@ -10,12 +10,6 @@
                     <span class="nav-text">Manajemen User</span>
                 </a>
             </li>
-            <li><a href="{{ route('admin.profile') }}" class="ai-icon" aria-expanded="false" title="Pengaturan Akun">
-                    <i class="flaticon-381-user-2"></i>
-                    <span class="nav-text">Pengaturan Akun</span>
-                </a>
-            </li>
-            @endif
             <li><a href="index2.html" class="ai-icon" aria-expanded="false" title="Database">
                     <i class="flaticon-381-database"></i>
                     <span class="nav-text">Database</span>
@@ -26,6 +20,24 @@
                     <span class="nav-text">Permintaan Database</span>
                 </a>
             </li>
+            <li><a href="{{ route('admin.profile') }}" class="ai-icon" aria-expanded="false" title="Pengaturan Akun">
+                    <i class="flaticon-381-user-2"></i>
+                    <span class="nav-text">Pengaturan Akun</span>
+                </a>
+            </li>
+            @elseif(auth()->user()->role == 'A')
+            <li><a href="{{ route('alumni.index') }}" class="ai-icon" aria-expanded="false" title="Profil">
+                    <i class="flaticon-381-user-2"></i>
+                    <span class="nav-text">Profil</span>
+                </a>
+            </li>
+            @else
+            <li><a href="{{ route('student.index') }}" class="ai-icon" aria-expanded="false" title="Profil">
+                    <i class="flaticon-381-user-2"></i>
+                    <span class="nav-text">Profil</span>
+                </a>
+            </li>
+            @endif
             <li><a href="javascript:void(0)" class="ai-icon logout" aria-expanded="false" title="Keluar">
                     <i class="flaticon-381-exit-2"></i>
                     <span class="nav-text">Keluar</span>

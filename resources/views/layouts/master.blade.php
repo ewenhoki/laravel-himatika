@@ -96,6 +96,25 @@
 	<script src="{{ asset('asset_dashboard/js/master-init.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('asset_dashboard/vendor/toastr/js/toastr.min.js') }}"></script>
+    <script>
+        $('.logout').click(function(){
+            var url = "{{ route('logout') }}";
+            swal({   
+                title: "Keluar ?",   
+                text: "Anda harus masuk kembali untuk mengakses data.",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Ya",   
+                cancelButtonText: "Tidak",   
+            })
+            .then(function(WillDelete){
+                if(WillDelete.value){
+                    window.location = url;
+                }
+            });
+        });
+    </script>
 	@yield('footer')
 </body>
 
