@@ -62,4 +62,6 @@ Route::group(['middleware' => ['auth','verified','checkrole:A']], function(){
 
 Route::group(['middleware' => ['auth','verified','checkrole:M']], function(){
     Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.index');
+    Route::post('/student/profile', [StudentController::class, 'update'])->name('student.profile.update');
+    Route::post('/student/password', [StudentController::class, 'updatePassword'])->name('student.password.edit');
 });
