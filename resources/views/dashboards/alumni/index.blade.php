@@ -3,6 +3,7 @@
 @section('header')
 <title>Profil</title>
 <link rel="stylesheet" href="{{ asset('asset_dashboard/js/crop/ijaboCropTool.min.css') }}">
+<link rel="stylesheet" href="{{ asset('asset_dashboard/css/yearpicker.css') }}">
 @endsection
 
 @section('header-title')
@@ -68,6 +69,8 @@
                             <br>
                             <h4 class="f-w-500">Nama</h4>
                             <p>{{ auth()->user()->name }}</p>
+                            <h4 class="f-w-500">NPM</h4>
+                            <p>{{ auth()->user()->npm }}</p>
                             <h4 class="f-w-500">Email</h4>
                             <p>{{ auth()->user()->email }}</p>
                             <h4 class="f-w-500">Nomor Telepon</h4>
@@ -78,6 +81,14 @@
                             @elseif(auth()->user()->gender == 'L')
                             <p>Laki-laki</p>
                             @endif
+                            <h4 class="f-w-500">Tempat Lahir</h4>
+                            <p>{{ auth()->user()->birth_place!='' ? auth()->user()->birth_place : '-' }}</p>
+                            <h4 class="f-w-500">Tanggal Lahir</h4>
+                            <p>{{ auth()->user()->birth_date!='' ? auth()->user()->birth_date : '-' }}</p>
+                            <h4 class="f-w-500">Agama</h4>
+                            <p>{{ auth()->user()->religion!='' ? auth()->user()->religion : '-' }}</p>
+                            <h4 class="f-w-500">Golongan Darah</h4>
+                            <p>{{ auth()->user()->blood_group!='' ? auth()->user()->blood_group : '-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -90,14 +101,19 @@
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link active show">Biodata</a>
                                     </li>
+                                    <li class="nav-item"><a href="#education" data-toggle="tab" class="nav-link">Pendidikan Lanjut</a>
+                                    </li>
+                                    <li class="nav-item"><a href="#jobs" data-toggle="tab" class="nav-link">Pekerjaan</a>
+                                    </li>
+                                    <li class="nav-item"><a href="#certification" data-toggle="tab" class="nav-link">Sertifikasi</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="profile-settings" class="tab-pane fade active show">
-                                        <div class="pt-3">
+                                        <div class="pt-4 border-bottom-1 pb-3">
+                                            <h4 class="text-primary">Data Pribadi</h4>
                                             <div class="settings-form">
-                                                <br>
                                                 {!! Form::open(['route' => 'alumni.profile.update','class'=>'form-valide']) !!}
-                                                    <h4 class="text-primary">Data Pribadi</h4>
                                                     <div class="form-group">
                                                         <label>Nama Lengkap</label>
                                                         {!! Form::text('name', auth()->user()->name, ['id'=>'name','class'=>'form-control']) !!}
@@ -176,8 +192,195 @@
                                                         </div>
                                                     </div>
                                                     <br>
+                                                    <h4 class="text-primary">Pendapatan</h4>
+                                                    <div class="form-group">
+                                                        <label>Rentang Gaji</label>
+                                                        {!! Form::select('salary', ['< Rp 3.000.000,00' => '< Rp 3.000.000,00','Rp 3.000.001,00 - Rp 6.000.000,00' => 'Rp 3.000.001,00 - Rp 6.000.000,00','Rp 6.000.001,00 - Rp 10.000.000,00'=>'Rp 6.000.001,00 - Rp 10.000.000,00','> Rp 10.000.001,00'=>'> Rp 10.000.001,00'], auth()->user()->inactivestudent->salary, ['class'=>'form-control default-select','id'=>'salary','placeholder'=>'Pilih Rentang Gaji']) !!}
+                                                    </div>
+                                                    <br>
                                                     <button class="btn btn-primary" type="submit">Perbaharui Data</button>
                                                 {!! Form::close() !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="education" class="tab-pane fade">
+                                        <div class="profile-about-me">
+                                            <div class="pt-4 border-bottom-1 pb-3">
+                                                <h4 class="text-primary">Pendidikan Lanjut</h4>
+                                                <p class="mb-2">Silakan mengisi form dibawah ini untuk menambah riwayat pendidikan lanjut.</p>
+                                                @if(auth()->user()->inactivestudent->educations()->first())
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-responsive-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Universitas</th>
+                                                                <th>Tingkat</th>
+                                                                <th>Tahun</th>
+                                                                <th>Jurusan</th>
+                                                                <th>Aksi</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (auth()->user()->inactivestudent->educations()->orderBy('year')->get() as $key=>$education)
+                                                            <tr>
+                                                                <td>{{ $key+1 }}</td>
+                                                                <td>{{ $education->university }}</td>
+                                                                <td>
+                                                                    <span class="badge badge-primary">{{ $education->level }}</span>
+                                                                </td>
+                                                                <td>{{ $education->year }}</td>
+                                                                <td>{{ $education->major }}</td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <a href="javascript:void(0)" education_id="{{ $education->id }}" university="{{ $education->university }}" level="{{ $education->level }}" year="{{ $education->year }}" major="{{ $education->major }}" data-toggle="modal" data-target="#EduModal" class="btn btn-primary shadow btn-xs sharp mr-1 modal-edit1"><i class="fa fa-pencil"></i></a>
+                                                                        <a href="javascript:void(0)" education-id="{{ $education->id }}" num="{{ $key+1 }}" class="btn btn-danger shadow btn-xs sharp delete-edu"><i class="fa fa-trash"></i></a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @endif
+                                                <div class="settings-form">
+                                                    {!! Form::open(['route' => 'alumni.education.add','class'=>'education-valide']) !!}
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Tingkat</label>
+                                                                {!! Form::select('level', ['S2' => 'S2','S3' => 'S3','Lainnya'=>'Lainnya'], '', ['class'=>'form-control default-select','id'=>'level','placeholder'=>'Pilih Tingkat Pendidikan']) !!}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Tahun Masuk</label>
+                                                                {!! Form::text('year', '', ['id'=>'year','class'=>'form-control','autocomplete'=>'off']) !!}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Universitas</label>
+                                                                {!! Form::text('university', '', ['id'=>'university','class'=>'form-control']) !!}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Jurusan</label>
+                                                                {!! Form::text('major', '', ['id'=>'major','class'=>'form-control']) !!}
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <button class="btn btn-primary" type="submit">Tambah Data</button>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="jobs" class="tab-pane fade">
+                                        <div class="profile-about-me">
+                                            <div class="pt-4 border-bottom-1 pb-3">
+                                                <h4 class="text-primary">Riwayat Pekerjaan</h4>
+                                                <p class="mb-2">Silakan mengisi form dibawah ini untuk menambah riwayat pekerjaan.</p>
+                                                @if(auth()->user()->inactivestudent->jobs()->first())
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-responsive-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Nama Perusahaan</th>
+                                                                <th>Posisi</th>
+                                                                <th>Tahun</th>
+                                                                <th>Aksi</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (auth()->user()->inactivestudent->jobs()->orderBy('year')->get() as $key=>$job)
+                                                            <tr>
+                                                                <td>{{ $key+1 }}</td>
+                                                                <td>{{ $job->company_name }}</td>
+                                                                <td>
+                                                                    <span class="badge badge-primary">{{ $job->position }}</span>
+                                                                </td>
+                                                                <td>{{ $job->year }}</td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <a href="javascript:void(0)" job_id="{{ $job->id }}" position="{{ $job->position }}" year="{{ $job->year }}" company_name="{{ $job->company_name }}" data-toggle="modal" data-target="#JobModal" class="btn btn-primary shadow btn-xs sharp mr-1 modal-edit2"><i class="fa fa-pencil"></i></a>
+                                                                        <a href="javascript:void(0)" job-id="{{ $job->id }}" num="{{ $key+1 }}" class="btn btn-danger shadow btn-xs sharp delete-job"><i class="fa fa-trash"></i></a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @endif
+                                                <div class="settings-form">
+                                                    {!! Form::open(['route' => 'alumni.job.add','class'=>'job-valide']) !!}
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label>Nama Perusahaan</label>
+                                                                {!! Form::text('company_name', '', ['id'=>'company_name','class'=>'form-control','autocomplete'=>'off']) !!}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Posisi</label>
+                                                                {!! Form::text('position', '', ['id'=>'position','class'=>'form-control']) !!}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Tahun Masuk</label>
+                                                                {!! Form::text('year', '', ['id'=>'year_job','class'=>'form-control','autocomplete'=>'off']) !!}
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <button class="btn btn-primary" type="submit">Tambah Data</button>
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="certification" class="tab-pane fade">
+                                        <div class="profile-about-me">
+                                            <div class="pt-4 border-bottom-1 pb-3">
+                                                <h4 class="text-primary">Sertifikasi</h4>
+                                                <p class="mb-2">Silakan mengisi form dibawah ini untuk menambah sertifikasi.</p>
+                                                @if(auth()->user()->inactivestudent->certifications()->first())
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-responsive-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Nama</th>
+                                                                <th>Tahun</th>
+                                                                <th>Aksi</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (auth()->user()->inactivestudent->certifications()->orderBy('year')->get() as $key=>$certification)
+                                                            <tr>
+                                                                <td>{{ $key+1 }}</td>
+                                                                <td>{{ $certification->name }}</td>
+                                                                <td>{{ $certification->year }}</td>
+                                                                <td>
+                                                                    <div class="d-flex">
+                                                                        <a href="javascript:void(0)" certification_id="{{ $certification->id }}" year="{{ $certification->year }}" c_name="{{ $certification->name }}" data-toggle="modal" data-target="#CtfModal" class="btn btn-primary shadow btn-xs sharp mr-1 modal-edit3"><i class="fa fa-pencil"></i></a>
+                                                                        <a href="javascript:void(0)" certification-id="{{ $certification->id }}" num="{{ $key+1 }}" class="btn btn-danger shadow btn-xs sharp delete-ctf"><i class="fa fa-trash"></i></a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @endif
+                                                <div class="settings-form">
+                                                    {!! Form::open(['route' => 'alumni.certification.add','class'=>'ctf-valide']) !!}
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label>Nama Sertifikasi</label>
+                                                                {!! Form::text('name', '', ['id'=>'ctf_name','class'=>'form-control','autocomplete'=>'off']) !!}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label>Tahun</label>
+                                                                {!! Form::text('year', '', ['id'=>'year_ctf','class'=>'form-control','autocomplete'=>'off']) !!}
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <button class="btn btn-primary" type="submit">Tambah Data</button>
+                                                    {!! Form::close() !!}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -265,11 +468,118 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="EduModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ubah Data Pendidikan</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                {!! Form::open(['route' => 'alumni.education.edit','class'=>'edu-edit-valide']) !!}
+                    <div class="row"> 
+                        {!! Form::hidden('education_id', '', ['id'=>'education_id']) !!}
+                        <div class="col-lg-12 form-group">
+                            <label>Tingkat</label>
+                            {!! Form::text('level', '', ['id'=>'level_edit','class'=>'form-control','autocomplete'=>'off','disabled']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Tahun Masuk</label>
+                            {!! Form::text('year', '', ['id'=>'year_edit','class'=>'form-control','autocomplete'=>'off']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Universitas</label>
+                            {!! Form::text('university', '', ['id'=>'university_edit','class'=>'form-control']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Jurusan</label>
+                            {!! Form::text('major', '', ['id'=>'major_edit','class'=>'form-control']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <div class="form-group mb-0">
+                                <br>
+                                <input type="submit" value="Ubah" class="submit btn btn-primary btn-sm" name="submit">
+                            </div>
+                        </div>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="JobModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ubah Data Pekerjaan</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                {!! Form::open(['route' => 'alumni.job.edit','class'=>'job-edit-valide']) !!}
+                    <div class="row"> 
+                        {!! Form::hidden('job_id', '', ['id'=>'job_id']) !!}
+                        <div class="col-lg-12 form-group">
+                            <label>Nama Perusahaan</label>
+                            {!! Form::text('company_name', '', ['id'=>'company_name_edit','class'=>'form-control']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Posisi</label>
+                            {!! Form::text('position', '', ['id'=>'position_edit','class'=>'form-control']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Tahun Masuk</label>
+                            {!! Form::text('year', '', ['id'=>'year_job_edit','class'=>'form-control','autocomplete'=>'off']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <div class="form-group mb-0">
+                                <br>
+                                <input type="submit" value="Ubah" class="submit btn btn-primary btn-sm" name="submit">
+                            </div>
+                        </div>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CtfModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ubah Data Sertifikasi</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                {!! Form::open(['route' => 'alumni.certification.edit','class'=>'ctf-edit-valide']) !!}
+                    <div class="row"> 
+                        {!! Form::hidden('ctf_id', '', ['id'=>'ctf_id']) !!}
+                        <div class="col-lg-12 form-group">
+                            <label>Nama Sertifikasi</label>
+                            {!! Form::text('name', '', ['id'=>'ctf_name_edit','class'=>'form-control']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <label>Tahun</label>
+                            {!! Form::text('year', '', ['id'=>'year_ctf_edit','class'=>'form-control','autocomplete'=>'off']) !!}
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <div class="form-group mb-0">
+                                <br>
+                                <input type="submit" value="Ubah" class="submit btn btn-primary btn-sm" name="submit">
+                            </div>
+                        </div>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal End -->
 @endsection
 
 @section('footer')
 <script src="{{ asset('asset_dashboard/js/crop/ijaboCropTool.min.js') }}"></script> 
+<script src="{{ asset('asset_dashboard/js/yearpicker.js') }}"></script>
+<script src="{{ asset('asset_dashboard/js/alumni-index-init.js') }}"></script>
 <script>
     $('#avatar1').ijaboCropTool({
         preview : '.user-picture',
@@ -286,111 +596,62 @@
             alert(message);
         },
     });
-    function myFunction() {
-        var x = document.getElementById("password");
-        var y = document.getElementById("new_password");
-        var z = document.getElementById("confirm_password");
-        if (x.type === "password") {
-            x.type = "text";
-            y.type = "text";
-            z.type = "text";
-        } else {
-            x.type = "password";
-            y.type = "password";
-            z.type = "password";
-        }
-    }
-    $('.datepicker-default').pickadate({
-        format: 'yyyy/mm/dd',
-        selectMonths: true,
-        max: '0',
-        selectYears: 75,
+    $('.delete-edu').click(function(){
+        var education_id = $(this).attr('education-id');
+        var num = $(this).attr('num');
+        var url = "{{route('alumni.delete.education', '')}}"+"/"+education_id;
+        swal({   
+            title: "Yakin ?",   
+            text: "Hapus riwayat pendidikan nomor "+num+" ?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Ya",   
+            cancelButtonText: "Tidak",   
+        })
+        .then(function(WillDelete){
+            if(WillDelete.value){
+                window.location = url;
+            }
+        });
     });
-    jQuery(".form-valide").validate({
-        rules: {
-            "name": {
-                required: true,
-                minlength: 5,
-            },
-            "email": {
-                required: true,
-                email: true,
-            },
-            "phone": {
-                required: true,
-                number: true,
-                minlength: 10,
-                maxlength: 13,
-            },
-        },
-        messages: {
-            name: {
-                required: "Nama Wajib Diisi !",
-                minlength: "Isi paling sedikit {0} karakter !",
-            },
-            email: {
-                required: "E-mail Wajib Diisi !",
-                email: "Masukan email yang valid !",
-            },
-            phone: {
-                required: "Nomor Telepon Wajib Diisi !",
-                number: "Masukan nomor yang valid !",
-                minlength: "Isi paling sedikit {0} karakter !",
-                maxlength: "Isi paling banyak {0} karakter !",
-            },
-        },
-        ignore: [],
-        errorClass: "invalid-feedback animated fadeInUp",
-        errorElement: "div",
-        errorPlacement: function(e, a) {
-            jQuery(a).parents(".form-group").append(e)
-        },
-        highlight: function(e) {
-            jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
-        },
-        success: function(e) {
-            jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
-        },
+    $('.delete-job').click(function(){
+        var job_id = $(this).attr('job-id');
+        var num = $(this).attr('num');
+        var url = "{{route('alumni.delete.job', '')}}"+"/"+job_id;
+        swal({   
+            title: "Yakin ?",   
+            text: "Hapus riwayat pekerjaan nomor "+num+" ?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Ya",   
+            cancelButtonText: "Tidak",   
+        })
+        .then(function(WillDelete){
+            if(WillDelete.value){
+                window.location = url;
+            }
+        });
     });
-    jQuery(".password-valide").validate({
-        rules: {
-            "password": {
-                required: true,
-            },
-            "new_password": {
-                required: true,
-                minlength: 8,
-            },
-            "confirm_password": {
-                required: true,
-                equalTo : "#new_password",
-            },
-        },
-        messages: {
-            password: {
-                required: "Kata Sandi Lama Wajib Diisi !",
-            },
-            new_password: {
-                required: "Kata Sandi Baru Wajib Diisi !",
-                minlength: "Isi paling sedikit {0} karakter !",
-            },
-            confirm_password: {
-                required: "Konfirmasi Kata Sandi Baru Wajib Diisi !",
-                equalTo: "Kata Sandi Tidak Sama !",
-            },
-        },
-        ignore: [],
-        errorClass: "invalid-feedback animated fadeInUp",
-        errorElement: "div",
-        errorPlacement: function(e, a) {
-            jQuery(a).parents(".form-group").append(e)
-        },
-        highlight: function(e) {
-            jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
-        },
-        success: function(e) {
-            jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
-        },
+    $('.delete-ctf').click(function(){
+        var ctf_id = $(this).attr('certification-id');
+        var num = $(this).attr('num');
+        var url = "{{route('alumni.delete.certification', '')}}"+"/"+ctf_id;
+        swal({   
+            title: "Yakin ?",   
+            text: "Hapus sertifikasi nomor "+num+" ?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Ya",   
+            cancelButtonText: "Tidak",   
+        })
+        .then(function(WillDelete){
+            if(WillDelete.value){
+                window.location = url;
+            }
+        });
     });
 </script>
 @if(session('fail'))
@@ -428,6 +689,28 @@
 @if(session('updated'))
     <script>
         toastr.success("Kata sandi berhasil diperbaharui!", "Berhasil", {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-top-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+        });
+    </script>
+@endif
+@if(session('deleted'))
+    <script>
+        toastr.success("Berhasil menghapus data!", "Berhasil", {
             timeOut: 5e3,
             closeButton: !0,
             debug: !1,

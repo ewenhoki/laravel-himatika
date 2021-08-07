@@ -47,8 +47,17 @@ Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function()
 
 Route::group(['middleware' => ['auth','verified','checkrole:A']], function(){
     Route::get('/alumni/dashboard', [AlumniController::class, 'index'])->name('alumni.index');
+    Route::get('/alumni/education/delete/{education}', [AlumniController::class, 'deleteEducation'])->name('alumni.delete.education');
+    Route::get('/alumni/job/delete/{job}', [AlumniController::class, 'deleteJob'])->name('alumni.delete.job');
+    Route::get('/alumni/certification/delete/{certification}', [AlumniController::class, 'deleteCtf'])->name('alumni.delete.certification');
     Route::post('/alumni/profile', [AlumniController::class, 'update'])->name('alumni.profile.update');
     Route::post('/alumni/password', [AlumniController::class, 'updatePassword'])->name('alumni.password.edit');
+    Route::post('/alumni/education/add', [AlumniController::class, 'addEducation'])->name('alumni.education.add');
+    Route::post('/alumni/education/update', [AlumniController::class, 'editEducation'])->name('alumni.education.edit');
+    Route::post('/alumni/job/add', [AlumniController::class, 'addJob'])->name('alumni.job.add');
+    Route::post('/alumni/job/update', [AlumniController::class, 'editJob'])->name('alumni.job.edit');
+    Route::post('/alumni/certification/add', [AlumniController::class, 'addCertification'])->name('alumni.certification.add');
+    Route::post('/alumni/certification/update', [AlumniController::class, 'editCertification'])->name('alumni.certification.edit');
 });
 
 Route::group(['middleware' => ['auth','verified','checkrole:M']], function(){

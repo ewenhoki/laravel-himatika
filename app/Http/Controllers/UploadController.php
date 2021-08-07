@@ -18,7 +18,7 @@ class UploadController extends Controller
         else{
             $UserInfo = User::find(auth()->user()->id);
             $userPhoto = $UserInfo->avatar;
-            if($userPhoto != ''){
+            if($userPhoto != '' && file_exists(public_path('user_image/'.auth()->user()->avatar))){
                 unlink($path.$userPhoto);
             }
             $UserInfo->update(['avatar'=>$new_image_name]);
