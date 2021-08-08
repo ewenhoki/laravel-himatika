@@ -1,3 +1,11 @@
+$('#period').yearpicker();
+$('#year_com').yearpicker();
+$('#period_edit').yearpicker();
+$('#year_com_edit').yearpicker();
+$('#year_seminar').yearpicker();
+$('#year_seminar_edit').yearpicker();
+$('#year_achievment').yearpicker();
+$('#year_ach_edit').yearpicker();
 function myFunction() {
     var x = document.getElementById("password");
     var y = document.getElementById("new_password");
@@ -154,4 +162,394 @@ jQuery(".password-valide").validate({
     success: function(e) {
         jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
     },
+});
+jQuery(".organization-valide").validate({
+    rules: {
+        "period": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+        "position": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        period: {
+            required: "Periode Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Organisasi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+        position: {
+            required: "Posisi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+jQuery(".com-valide").validate({
+    rules: {
+        "year": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+        "position": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        year: {
+            required: "Tahun Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Kepanitiaan Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+        position: {
+            required: "Posisi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+jQuery(".seminar-valide").validate({
+    rules: {
+        "year": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        year: {
+            required: "Tahun Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Pelatihan Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+jQuery(".ach-valide").validate({
+    rules: {
+        "year": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+        "level": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        year: {
+            required: "Tahun Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Penghargaan/Prestasi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+        level: {
+            required: "Tingkat Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+jQuery(".or-edit-valide").validate({
+    rules: {
+        "period": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+        "position": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        period: {
+            required: "Periode Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Organisasi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+        position: {
+            required: "Posisi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+jQuery(".com-edit-valide").validate({
+    rules: {
+        "year": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+        "position": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        year: {
+            required: "Tahun Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Kepanitiaan Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+        position: {
+            required: "Posisi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+jQuery(".seminar-edit-valide").validate({
+    rules: {
+        "year": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        year: {
+            required: "Tahun Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Pelatihan Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+jQuery(".ach-edit-valide").validate({
+    rules: {
+        "year": {
+            required: true,
+            number: true,
+            minlength: 4,
+            maxlength: 4,
+        },
+        "name": {
+            required: true,
+            minlength: 4,
+        },
+        "level": {
+            required: true,
+            minlength: 4,
+        },
+    },
+    messages: {
+        year: {
+            required: "Tahun Wajib Diisi !",
+            number: "Masukan nomor yang valid !",
+            minlength: "Isi paling sedikit {0} karakter !",
+            maxlength: "Isi paling banyak {0} karakter !",
+        },
+        name: {
+            required: "Nama Penghargaan/Prestasi Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+        level: {
+            required: "Tingkat Wajib Diisi !",
+            minlength: "Isi paling sedikit {0} karakter !",
+        },
+    },
+    ignore: [],
+    errorClass: "invalid-feedback animated fadeInUp",
+    errorElement: "div",
+    errorPlacement: function(e, a) {
+        jQuery(a).parents(".form-group").append(e)
+    },
+    highlight: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid")
+    },
+    success: function(e) {
+        jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+    },
+});
+$(document).on("click", ".modal-edit1", function () {
+    var name = $(this).attr('o_name');
+    var position = $(this).attr('position');
+    var period = $(this).attr('period');
+    var id = $(this).attr('organization_id');
+    $(".modal-body #organization_name_edit").val( name );
+    $(".modal-body #position_edit").val( position ); 
+    $(".modal-body #period_edit").val( period );
+    $(".modal-body #organization_id").val( id );
+});
+$(document).on("click", ".modal-edit2", function () {
+    var name = $(this).attr('com_name');
+    var position = $(this).attr('position');
+    var year = $(this).attr('year');
+    var id = $(this).attr('committee_id');
+    $(".modal-body #committee_name_edit").val( name );
+    $(".modal-body #position_com_edit").val( position ); 
+    $(".modal-body #year_com_edit").val( year );
+    $(".modal-body #committee_id").val( id );
+});
+$(document).on("click", ".modal-edit3", function () {
+    var name = $(this).attr('s_name');
+    var year = $(this).attr('year');
+    var id = $(this).attr('seminar_id');
+    $(".modal-body #seminar_name_edit").val( name );
+    $(".modal-body #year_seminar_edit").val( year );
+    $(".modal-body #seminar_id").val( id );
+});
+$(document).on("click", ".modal-edit4", function () {
+    var name = $(this).attr('ach_name');
+    var level = $(this).attr('level');
+    var year = $(this).attr('year');
+    var id = $(this).attr('achievment_id');
+    $(".modal-body #ach_name_edit").val( name );
+    $(".modal-body #level_ach_edit").val( level ); 
+    $(".modal-body #year_ach_edit").val( year );
+    $(".modal-body #achievment_id").val( id );
 });

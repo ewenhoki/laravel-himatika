@@ -62,6 +62,18 @@ Route::group(['middleware' => ['auth','verified','checkrole:A']], function(){
 
 Route::group(['middleware' => ['auth','verified','checkrole:M']], function(){
     Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.index');
+    Route::get('/student/organization/delete/{organization}', [StudentController::class, 'deleteOrganization'])->name('student.delete.organization');
+    Route::get('/student/committee/delete/{committee}', [StudentController::class, 'deleteCommittee'])->name('student.delete.committee');
+    Route::get('/student/seminar/delete/{seminar}', [StudentController::class, 'deleteSeminar'])->name('student.delete.seminar');
+    Route::get('/student/achievment/delete/{achievment}', [StudentController::class, 'deleteAchievment'])->name('student.delete.achievment');
     Route::post('/student/profile', [StudentController::class, 'update'])->name('student.profile.update');
     Route::post('/student/password', [StudentController::class, 'updatePassword'])->name('student.password.edit');
+    Route::post('/student/organization/add', [StudentController::class, 'addOrganization'])->name('student.organization.add');
+    Route::post('/student/organization/update', [StudentController::class, 'editOrganization'])->name('student.organization.edit');
+    Route::post('/student/committee/add', [StudentController::class, 'addCommittee'])->name('student.committee.add');
+    Route::post('/student/committee/update', [StudentController::class, 'editCommittee'])->name('student.committee.edit');
+    Route::post('/student/seminar/add', [StudentController::class, 'addSeminar'])->name('student.seminar.add');
+    Route::post('/student/seminar/update', [StudentController::class, 'editSeminar'])->name('student.seminar.edit');
+    Route::post('/student/achievment/add', [StudentController::class, 'addAchievment'])->name('student.achievment.add');
+    Route::post('/student/achievment/update', [StudentController::class, 'editAchievment'])->name('student.achievment.edit');
 });

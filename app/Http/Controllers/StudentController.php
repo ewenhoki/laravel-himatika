@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Business;
+use App\Models\Organization;
+use App\Models\Committee;
+use App\Models\Seminar;
+use App\Models\Achievment;
 
 class StudentController extends Controller
 {
@@ -86,5 +90,99 @@ class StudentController extends Controller
             return back()->with('fail','wrong passsword');
         }
         return redirect()->route('student.index')->with('updated','success');
+    }
+
+    public function addOrganization(Request $request){
+        $organization = new Organization;
+        $organization->activestudent_id = auth()->user()->activestudent->id;
+        $organization->name = trim($request->name);
+        $organization->position = ucwords(strtolower(trim($request->position)));
+        $organization->period = $request->period;
+        $organization->save();
+        return redirect()->route('student.index')->with('success','success');
+    }
+
+    public function deleteOrganization(Organization $organization){
+        $organization->delete();
+        return redirect()->route('student.index')->with('deleted','success');
+    }
+
+    public function editOrganization(Request $request){
+        $organization = Organization::find($request->organization_id);
+        $organization->name = trim($request->name);
+        $organization->position = ucwords(strtolower(trim($request->position)));
+        $organization->period = $request->period;
+        $organization->save();
+        return redirect()->route('student.index')->with('success','success');
+    }
+
+    public function addCommittee(Request $request){
+        $committee = new Committee;
+        $committee->activestudent_id = auth()->user()->activestudent->id;
+        $committee->name = trim($request->name);
+        $committee->position = ucwords(strtolower(trim($request->position)));
+        $committee->year = $request->year;
+        $committee->save();
+        return redirect()->route('student.index')->with('success','success');
+    }
+
+    public function deleteCommittee(Committee $committee){
+        $committee->delete();
+        return redirect()->route('student.index')->with('deleted','success');
+    }
+
+    public function editCommittee(Request $request){
+        $committee = Committee::find($request->committee_id);
+        $committee->name = trim($request->name);
+        $committee->position = ucwords(strtolower(trim($request->position)));
+        $committee->year = $request->year;
+        $committee->save();
+        return redirect()->route('student.index')->with('success','success');
+    }
+
+    public function addSeminar(Request $request){
+        $seminar = new Seminar;
+        $seminar->activestudent_id = auth()->user()->activestudent->id;
+        $seminar->name = trim($request->name);
+        $seminar->year = $request->year;
+        $seminar->save();
+        return redirect()->route('student.index')->with('success','success');
+    }
+
+    public function deleteSeminar(Seminar $seminar){
+        $seminar->delete();
+        return redirect()->route('student.index')->with('deleted','success');
+    }
+
+    public function editSeminar(Request $request){
+        $seminar = Seminar::find($request->seminar_id);
+        $seminar->name = trim($request->name);
+        $seminar->year = $request->year;
+        $seminar->save();
+        return redirect()->route('student.index')->with('success','success');
+    }
+
+    public function addAchievment(Request $request){
+        $achievment = new Achievment;
+        $achievment->activestudent_id = auth()->user()->activestudent->id;
+        $achievment->name = trim($request->name);
+        $achievment->level = ucwords(strtolower(trim($request->level)));
+        $achievment->year = $request->year;
+        $achievment->save();
+        return redirect()->route('student.index')->with('success','success');
+    }
+
+    public function deleteAchievment(Achievment $achievment){
+        $achievment->delete();
+        return redirect()->route('student.index')->with('deleted','success');
+    }
+
+    public function editAchievment(Request $request){
+        $achievment = Achievment::find($request->achievment_id);
+        $achievment->name = trim($request->name);
+        $achievment->level = ucwords(strtolower(trim($request->level)));
+        $achievment->year = $request->year;
+        $achievment->save();
+        return redirect()->route('student.index')->with('success','success');
     }
 }

@@ -210,7 +210,7 @@
                                                 <p class="mb-2">Silakan mengisi form dibawah ini untuk menambah riwayat pendidikan lanjut.</p>
                                                 @if(auth()->user()->inactivestudent->educations()->first())
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-responsive-sm">
+                                                    <table class="table header-border table-bordered table-hover verticle-middle">
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
@@ -277,7 +277,7 @@
                                                 <p class="mb-2">Silakan mengisi form dibawah ini untuk menambah riwayat pekerjaan.</p>
                                                 @if(auth()->user()->inactivestudent->jobs()->first())
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-responsive-sm">
+                                                    <table class="table header-border table-bordered table-hover verticle-middle">
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
@@ -338,7 +338,7 @@
                                                 <p class="mb-2">Silakan mengisi form dibawah ini untuk menambah sertifikasi.</p>
                                                 @if(auth()->user()->inactivestudent->certifications()->first())
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-responsive-sm">
+                                                    <table class="table header-border table-bordered table-hover verticle-middle">
                                                         <thead>
                                                             <tr>
                                                                 <th>#</th>
