@@ -10,15 +10,19 @@
                     <span class="nav-text">Manajemen User</span>
                 </a>
             </li>
-            <li><a href="index2.html" class="ai-icon" aria-expanded="false" title="Database">
+            <li><a href="request2.html" class="ai-icon" aria-expanded="false" title="Permintaan Database">
+                <i class="flaticon-381-network"></i>
+                <span class="nav-text">Permintaan Database</span>
+            </a>
+        </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-381-database"></i>
                     <span class="nav-text">Database</span>
                 </a>
-            </li>
-            <li><a href="request2.html" class="ai-icon" aria-expanded="false" title="Permintaan Database">
-                    <i class="flaticon-381-network"></i>
-                    <span class="nav-text">Permintaan Database</span>
-                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.student.data') }}">Mahasiswa</a></li>
+                    <li><a href="{{ route('admin.alumni.data') }}">Alumni</a></li>
+                </ul>
             </li>
             <li><a href="{{ route('admin.profile') }}" class="ai-icon" aria-expanded="false" title="Pengaturan Akun">
                     <i class="flaticon-381-user-2"></i>

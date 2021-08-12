@@ -41,8 +41,11 @@ Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function()
     Route::get('/admin/delete/{user}', [AdminController::class, 'deleteUser'])->name('admin.delete');
     Route::get('/admin/switch_student/{user}', [AdminController::class, 'switchStudent'])->name('admin.switch.student');
     Route::get('/admin/switch_alumni/{user}', [AdminController::class, 'switchAlumni'])->name('admin.switch.alumni');
+    Route::get('/admin/database/student', [AdminController::class, 'studentData'])->name('admin.student.data');
+    Route::get('/admin/database/alumni', [AdminController::class, 'alumniData'])->name('admin.alumni.data');
     Route::post('/admin/profile', [AdminController::class, 'update'])->name('admin.profile.edit');
     Route::post('/admin/password', [AdminController::class, 'updatePassword'])->name('admin.password.edit');
+    Route::post('/admin/database/student', [AdminController::class, 'studentDetail'])->name('admin.student.detail');
 });
 
 Route::group(['middleware' => ['auth','verified','checkrole:A']], function(){

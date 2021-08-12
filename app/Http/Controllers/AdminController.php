@@ -99,4 +99,34 @@ class AdminController extends Controller
         $user->save();
         return redirect()->route('admin.index')->with('switched','success');
     }
+
+    public function studentData(){
+        $generations_all = Generation::all();
+        $generations = array();
+        foreach($generations_all as $gen){
+            if($gen->activestudents()->first()){
+                $generations[] = $gen->id;
+            }
+        }
+        $generation = Generation::whereIn('id',$generations)
+            ->orderBy('year')
+            ->pluck('year','id');
+        return view('dashboards.admin.students', compact(['generation']));
+    }
+
+    public function studentDetail(Request $request){
+        $generations_all = Generation::all();
+        $generations = array();
+        foreach($generations_all as $gen){
+            if($gen->activestudents()->first()){
+                $generations[] = $gen->id;
+            }
+        }
+        $generation = Generation::whereIn('id',$generations)
+            ->orderBy('year')
+            ->pluck('year','id');
+        $gen = Generation::find($request->generation_id);
+        $student = $gen->activestudents()->get();
+        return view('dashboards.admin.students', compact(['student','gen','generation']));
+    }
 }
