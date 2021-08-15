@@ -129,4 +129,34 @@ class AdminController extends Controller
         $student = $gen->activestudents()->get();
         return view('dashboards.admin.students', compact(['student','gen','generation']));
     }
+
+    public function alumniData(){
+        $generations_all = Generation::all();
+        $generations = array();
+        foreach($generations_all as $gen){
+            if($gen->inactivestudents()->first()){
+                $generations[] = $gen->id;
+            }
+        }
+        $generation = Generation::whereIn('id',$generations)
+            ->orderBy('year')
+            ->pluck('year','id');
+        return view('dashboards.admin.alumni', compact(['generation']));
+    }
+
+    public function alumniDetail(Request $request){
+        $generations_all = Generation::all();
+        $generations = array();
+        foreach($generations_all as $gen){
+            if($gen->inactivestudents()->first()){
+                $generations[] = $gen->id;
+            }
+        }
+        $generation = Generation::whereIn('id',$generations)
+            ->orderBy('year')
+            ->pluck('year','id');
+        $gen = Generation::find($request->generation_id);
+        $alumni = $gen->inactivestudents()->get();
+        return view('dashboards.admin.alumni', compact(['alumni','gen','generation']));
+    }
 }

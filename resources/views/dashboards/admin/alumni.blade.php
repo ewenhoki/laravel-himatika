@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('header')
-<title>Database Mahasiswa</title>
+<title>Database Alumni</title>
 <style>
     @media screen and (max-width: 600px) {
     #export_all {
@@ -13,7 +13,7 @@
 @endsection
 
 @section('header-title')
-    Database Mahasiswa
+    Database Alumni
 @endsection
 
 @section('content')
@@ -22,7 +22,7 @@
         <div class="page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Database</a></li>
-                <li class="breadcrumb-item active"><a href="{{ route('admin.student.data') }}">Mahasiswa</a></li>
+                <li class="breadcrumb-item active"><a href="{{ route('admin.alumni.data') }}">Alumni</a></li>
             </ol>
         </div>
         <!-- row -->
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        {!! Form::open(['route' => 'admin.student.detail']) !!}
+                        {!! Form::open(['route' => 'admin.alumni.detail']) !!}
                             <div class="form-row">
                                 <label class="col-sm-3 col-form-label">Angkatan</label>
                                 <div class="form-group col-sm-3">
@@ -55,11 +55,11 @@
                     </div>
                 </div>
             </div>
-            @isset($student)
+            @isset($alumni)
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Database Mahasiswa Angkatan {{ $gen->year }}</h4>
+                        <h4 class="card-title">Database Alumni Angkatan {{ $gen->year }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -77,30 +77,26 @@
                                         <th>Golongan Darah</th>
                                         <th>Agama</th>
                                         <th>Alamat</th>
-                                        <th>Alamat Kost</th>
-                                        <th>ID Line</th>
                                         <th>Bidang Minat</th>
-                                        <th>Nama Ayah</th>
-                                        <th>Pekerjaan Ayah</th>
-                                        <th>Telepon Ayah</th>
-                                        <th>Nama Ibu</th>
-                                        <th>Pekerjaan Ibu</th>
-                                        <th>Telepon Ibu</th>
-                                        <th>Pendapatan</th>
-                                        <th>Organisasi</th>
-                                        <th>Kepanitiaan</th>
-                                        <th>Pelatihan</th>
-                                        <th>Prestasi</th>
+                                        <th>ID Line</th>
+                                        <th>Instagram</th>
+                                        <th>Twitter</th>
+                                        <th>Facebook</th>
+                                        <th>LinkedIn</th>
+                                        <th>Gaji</th>
+                                        <th>Pendidikan Lanjut</th>
+                                        <th>Riwayat Pekerjaan</th>
+                                        <th>Sertifikasi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($student as $key=>$st)
+                                    @foreach ($alumni as $key=>$al)
                                     <tr>
                                         <td>{{ $key+1 }}</td>
                                         <td>
-                                            @if($st->user->avatar!=NULL)
-                                                @if(file_exists(public_path('user_image/'.$st->user->avatar)))
-                                                <img src="{{ asset('user_image/'.$st->user->avatar) }}" class="rounded-circle" width="35" alt=""/>
+                                            @if($al->user->avatar!=NULL)
+                                                @if(file_exists(public_path('user_image/'.$al->user->avatar)))
+                                                <img src="{{ asset('user_image/'.$al->user->avatar) }}" class="rounded-circle" width="35" alt=""/>
                                                 @else
                                                 <img src="{{ asset('user_image/profile-default.png') }}" class="rounded-circle" width="35" alt=""/>
                                                 @endif
@@ -108,74 +104,56 @@
                                             <img src="{{ asset('user_image/profile-default.png') }}" class="rounded-circle" width="35" alt=""/>
                                             @endif
                                         </td>
-                                        <td>{{ $st->user->name }}</td>
-                                        <td>{{ $st->user->npm }}</td>
-                                        <td>{{ $st->user->email }}</td>
-                                        <td>{{ $st->user->phone }}</td>
+                                        <td>{{ $al->user->name }}</td>
+                                        <td>{{ $al->user->npm }}</td>
+                                        <td>{{ $al->user->email }}</td>
+                                        <td>{{ $al->user->phone }}</td>
                                         <td>
-                                            @if($st->user->gender == 'L')
+                                            @if($al->user->gender == 'L')
                                             <span class="badge light badge-success"><i class="fa fa-circle text-success mr-1"></i>Laki-laki</span>
                                             @else
                                             <span class="badge light badge-danger"><i class="fa fa-circle text-danger mr-1"></i>Perempuan</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if($st->user->birth_place != NULL || $st->user->birth_date != NULL)
-                                                {{ $st->user->birth_place.', '.\Carbon\Carbon::parse($st->user->birth_date)->locale('id')->isoFormat('D MMMM Y') }}
+                                            @if($al->user->birth_place != NULL || $al->user->birth_date != NULL)
+                                                {{ $al->user->birth_place.', '.\Carbon\Carbon::parse($al->user->birth_date)->locale('id')->isoFormat('D MMMM Y') }}
                                             @else
                                                 -
                                             @endif
                                         </td>
-                                        <td>{{ ($st->user->blood_group!=NULL) ? $st->user->blood_group : '-' }}</td>
-                                        <td>{{ ($st->user->religion!=NULL) ? $st->user->religion : '-' }}</td>
-                                        <td>{{ ($st->user->address!=NULL) ? $st->user->address : '-' }}</td>
-                                        <td>{{ ($st->boardning_address!=NULL) ? $st->boardning_address : '-' }}</td>
-                                        <td>{{ ($st->line!=NULL) ? $st->line : '-' }}</td>
-                                        <td>{{ ($st->interest!=NULL) ? $st->interest : '-' }}</td>
-                                        <td>{{ ($st->father_name!=NULL) ? $st->father_name : '-' }}</td>
-                                        <td>{{ ($st->father_job!=NULL) ? $st->father_job : '-' }}</td>
-                                        <td>{{ ($st->father_phone!=NULL) ? $st->father_phone : '-' }}</td>
-                                        <td>{{ ($st->mother_name!=NULL) ? $st->mother_name : '-' }}</td>
-                                        <td>{{ ($st->mother_job!=NULL) ? $st->mother_job : '-' }}</td>
-                                        <td>{{ ($st->mother_phone!=NULL) ? $st->mother_phone : '-' }}</td>
+                                        <td>{{ ($al->user->blood_group!=NULL) ? $al->user->blood_group : '-' }}</td>
+                                        <td>{{ ($al->user->religion!=NULL) ? $al->user->religion : '-' }}</td>
+                                        <td>{{ ($al->user->address!=NULL) ? $al->user->address : '-' }}</td>
+                                        <td>{{ ($al->interest!=NULL) ? $al->interest : '-' }}</td>
+                                        <td>{{ ($al->line!=NULL) ? $al->line : '-' }}</td>
+                                        <td>{{ ($al->instagram!=NULL) ? $al->instagram : '-' }}</td>
+                                        <td>{{ ($al->twitter!=NULL) ? $al->twitter : '-' }}</td>
+                                        <td>{{ ($al->facebook!=NULL) ? $al->facebook : '-' }}</td>
+                                        <td>{{ ($al->linkedin!=NULL) ? $al->linkedin : '-' }}</td>
+                                        <td>{{ ($al->salary!=NULL) ? $al->salary : '-' }}</td>
                                         <td>
-                                            @if($st->income==NULL || $st->income==0)
-                                                <span class="badge light badge-warning">Tidak</span>
-                                            @else
-                                                <span class="badge light badge-success">Ya</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($st->organizations()->first())
-                                                @foreach ($st->organizations()->get() as $or)
-                                                    <p><span class="badge light badge-light">{{ $or->name.' | '.$or->position.' | '.$or->period }}</span></p>
+                                            @if($al->educations()->first())
+                                                @foreach ($al->educations()->get() as $edu)
+                                                    <p><span class="badge light badge-light">{{ $edu->level.' | '.$edu->university.' | '.$edu->major.' | '.$edu->year }}</span></p>
                                                 @endforeach
                                             @else
                                                 -
                                             @endif
                                         </td>
                                         <td>
-                                            @if($st->committees()->first())
-                                                @foreach ($st->committees()->get() as $com)
-                                                    <p><span class="badge light badge-light">{{ $com->name.' | '.$com->position.' | '.$com->year }}</span></p>
+                                            @if($al->jobs()->first())
+                                                @foreach ($al->jobs()->get() as $job)
+                                                    <p><span class="badge light badge-light">{{ $job->company_name.' | '.$job->year.' | '.$job->position }}</span></p>
                                                 @endforeach
                                             @else
                                                 -
                                             @endif
                                         </td>
                                         <td>
-                                            @if($st->seminars()->first())
-                                                @foreach ($st->seminars()->get() as $sem)
-                                                    <p><span class="badge light badge-light">{{ $sem->name.' | '.$sem->year }}</span></p>
-                                                @endforeach
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($st->achievments()->first())
-                                                @foreach ($st->achievments()->get() as $ach)
-                                                    <p><span class="badge light badge-light">{{ $ach->name.' | '.$ach->level.' | '.$ach->year }}</span></p>
+                                            @if($al->certifications()->first())
+                                                @foreach ($al->certifications()->get() as $cer)
+                                                    <p><span class="badge light badge-light">{{ $cer->name.' | '.$cer->year }}</span></p>
                                                 @endforeach
                                             @else
                                                 -
@@ -196,7 +174,7 @@
 @endsection
 
 @section('footer')
-@isset($student)
+@isset($alumni)
 <script>
     $('#example').DataTable({
         dom: 'Blfrtip',
@@ -205,30 +183,30 @@
             {
                 extend : 'csv',
                 exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 ]
+                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
                 },
                 title : function() {
-                    return "Database Mahasiswa {{ $gen->year }}";
+                    return "Database Alumni {{ $gen->year }}";
                 },
                 titleAttr : 'CSV'
             },
             {
                 extend : 'excel',
                 exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 ]
+                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
                 },
                 title : function() {
-                    return "Database Mahasiswa {{ $gen->year }}";
+                    return "Database Alumni {{ $gen->year }}";
                 },
                 titleAttr : 'Excel'
             },
             {
                 extend : 'pdf',
                 exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 ]
+                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
                 },
                 title : function() {
-                    return "Database Mahasiswa {{ $gen->year }}";
+                    return "Database Alumni {{ $gen->year }}";
                 },
                 orientation : 'landscape',
                 pageSize : 'A2',
@@ -237,10 +215,10 @@
             {
                 extend : 'print',
                 exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 ]
+                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
                 },
                 title : function() {
-                    return "Database Mahasiswa {{ $gen->year }}";
+                    return "Database Alumni {{ $gen->year }}";
                 },
                 customize: function(win){
                     var last = null;

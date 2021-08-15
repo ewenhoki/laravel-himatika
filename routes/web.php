@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function()
     Route::post('/admin/profile', [AdminController::class, 'update'])->name('admin.profile.edit');
     Route::post('/admin/password', [AdminController::class, 'updatePassword'])->name('admin.password.edit');
     Route::post('/admin/database/student', [AdminController::class, 'studentDetail'])->name('admin.student.detail');
+    Route::post('/admin/database/alumni', [AdminController::class, 'alumniDetail'])->name('admin.alumni.detail');
 });
 
 Route::group(['middleware' => ['auth','verified','checkrole:A']], function(){
