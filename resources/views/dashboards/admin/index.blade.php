@@ -89,7 +89,7 @@
                                     </span>
                                     <div class="media-body">
                                         <p class="fs-14 mb-2">Permintaan Database</p>
-                                        <span class="title text-black font-w600">18</span>
+                                        <span class="title text-black font-w600">{{ $requests }}</span>
                                     </div>
                                 </div>
                                 <div class="progress" style="height:5px;">

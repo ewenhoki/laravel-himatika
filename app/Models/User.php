@@ -59,4 +59,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function inactivestudent(){
         return $this->hasOne(Inactivestudent::class);
     }
+
+    public function activestudents(){
+        return $this->hasMany(Activestudent::class);
+    }
+
+    public function studentrequests(){
+        return $this->hasMany(Studentrequest::class);
+    }
+
+    public function alumnirequests(){
+        return $this->hasMany(Alumnirequest::class);
+    }
 }

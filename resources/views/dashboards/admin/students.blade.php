@@ -4,11 +4,11 @@
 <title>Database Mahasiswa</title>
 <style>
     @media screen and (max-width: 600px) {
-    #export_all {
-        visibility: hidden;
-        display: none;
+        #export_all {
+            visibility: hidden;
+            display: none;
+        }
     }
-}
 </style>
 @endsection
 

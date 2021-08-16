@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\RequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,13 @@ Route::group(['middleware' => ['auth','verified','checkrole:A,M,Admin']], functi
     Route::post('/user/crop', [UploadController::class, 'crop'])->name('user.crop');
 });
 
+Route::group(['middleware' => ['auth','verified','checkrole:A,M']], function(){
+    Route::get('/student/request/database', [RequestController::class, 'studentRequest'])->name('student.request');
+    Route::get('/alumni/request/database', [RequestController::class, 'alumniRequest'])->name('alumni.request');
+    Route::post('/student/request/database', [RequestController::class, 'addStudentRequest'])->name('request.student.post');
+    Route::post('/alumni/request/database', [RequestController::class, 'addAlumniRequest'])->name('request.alumni.post');
+});
+
 Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function(){
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
@@ -43,6 +51,8 @@ Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function()
     Route::get('/admin/switch_alumni/{user}', [AdminController::class, 'switchAlumni'])->name('admin.switch.alumni');
     Route::get('/admin/database/student', [AdminController::class, 'studentData'])->name('admin.student.data');
     Route::get('/admin/database/alumni', [AdminController::class, 'alumniData'])->name('admin.alumni.data');
+    Route::get('/admin/database/student/request', [AdminController::class, 'studentRequests'])->name('admin.student.request');
+    Route::get('/admin/database/alumni/request', [AdminController::class, 'alumniRequests'])->name('admin.alumni.request');
     Route::post('/admin/profile', [AdminController::class, 'update'])->name('admin.profile.edit');
     Route::post('/admin/password', [AdminController::class, 'updatePassword'])->name('admin.password.edit');
     Route::post('/admin/database/student', [AdminController::class, 'studentDetail'])->name('admin.student.detail');

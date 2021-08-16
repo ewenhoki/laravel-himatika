@@ -10,12 +10,16 @@
                     <span class="nav-text">Manajemen User</span>
                 </a>
             </li>
-            <li><a href="request2.html" class="ai-icon" aria-expanded="false" title="Permintaan Database">
-                <i class="flaticon-381-network"></i>
-                <span class="nav-text">Permintaan Database</span>
-            </a>
-        </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false" title="Permintaan Database">
+                    <i class="flaticon-381-network"></i>
+                    <span class="nav-text">Permintaan Database</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.student.request') }}">Mahasiswa</a></li>
+                    <li><a href="{{ route('admin.alumni.request') }}">Alumni</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false" title="Database">
                     <i class="flaticon-381-database"></i>
                     <span class="nav-text">Database</span>
                 </a>
@@ -35,11 +39,29 @@
                     <span class="nav-text">Profil</span>
                 </a>
             </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false" title="Permintaan Database">
+                    <i class="flaticon-381-network"></i>
+                    <span class="nav-text">Permintaan Database</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('student.request') }}">Mahasiswa</a></li>
+                    <li><a href="{{ route('alumni.request') }}">Alumni</a></li>
+                </ul>
+            </li>
             @else
             <li><a href="{{ route('student.index') }}" class="ai-icon" aria-expanded="false" title="Profil">
                     <i class="flaticon-381-user-2"></i>
                     <span class="nav-text">Profil</span>
                 </a>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false" title="Permintaan Database">
+                    <i class="flaticon-381-network"></i>
+                    <span class="nav-text">Permintaan Database</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('student.request') }}">Mahasiswa</a></li>
+                    <li><a href="{{ route('alumni.request') }}">Alumni</a></li>
+                </ul>
             </li>
             @endif
             <li><a href="javascript:void(0)" class="ai-icon logout" aria-expanded="false" title="Keluar">

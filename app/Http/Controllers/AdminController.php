@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Generation;
 use App\Models\Activestudent;
 use App\Models\Inactivestudent;
+use App\Models\Studentrequest;
+use App\Models\Alumnirequest;
 
 class AdminController extends Controller
 {
@@ -16,7 +18,10 @@ class AdminController extends Controller
         $users = User::all();
         $activestudent = Activestudent::count();
         $inactivestudent = Inactivestudent::count();
-        return view('dashboards.admin.index', compact(['users','activestudent','inactivestudent']));
+        $student_request = Studentrequest::where('confirm','!=',1)->orWhereNull('confirm')->count();
+        $alumni_request = Alumnirequest::where('confirm','!=',1)->orWhereNull('confirm')->count();
+        $requests = $alumni_request + $student_request;
+        return view('dashboards.admin.index', compact(['users','activestudent','inactivestudent','requests']));
     }
 
     public function profile(){
@@ -158,5 +163,15 @@ class AdminController extends Controller
         $gen = Generation::find($request->generation_id);
         $alumni = $gen->inactivestudents()->get();
         return view('dashboards.admin.alumni', compact(['alumni','gen','generation']));
+    }
+
+    public function studentRequests(){
+        $requests = Studentrequest::orderBy('confirm')->orderBy('created_at', 'DESC')->get();
+        return view('dashboards.admin.student-request', compact(['requests']));
+    }
+
+    public function alumniRequests(){
+        $requests = Alumnirequest::orderBy('confirm')->orderBy('created_at', 'DESC')->get();
+        return view('dashboards.admin.alumni-request', compact(['requests']));
     }
 }

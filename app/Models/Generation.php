@@ -20,4 +20,12 @@ class Generation extends Model
     public function inactivestudents(){
         return $this->hasMany(Inactivestudent::class);
     }
+
+    public function studentrequests(){
+        return $this->hasMany(Studentrequest::class);
+    }
+
+    public function alumnirequests(){
+        return $this->hasMany(Alumnirequest::class);
+    }
 }
