@@ -18,8 +18,8 @@ class AdminController extends Controller
         $users = User::all();
         $activestudent = Activestudent::count();
         $inactivestudent = Inactivestudent::count();
-        $student_request = Studentrequest::where('confirm','!=',1)->orWhereNull('confirm')->count();
-        $alumni_request = Alumnirequest::where('confirm','!=',1)->orWhereNull('confirm')->count();
+        $student_request = Studentrequest::whereNull('confirm')->count();
+        $alumni_request = Alumnirequest::whereNull('confirm')->count();
         $requests = $alumni_request + $student_request;
         return view('dashboards.admin.index', compact(['users','activestudent','inactivestudent','requests']));
     }
@@ -130,6 +130,10 @@ class AdminController extends Controller
         $generation = Generation::whereIn('id',$generations)
             ->orderBy('year')
             ->pluck('year','id');
+        if($request->generation_id == NULL){
+            $student = Activestudent::orderBy('generation_id')->get();
+            return view('dashboards.admin.students', compact(['student','generation']));
+        }
         $gen = Generation::find($request->generation_id);
         $student = $gen->activestudents()->get();
         return view('dashboards.admin.students', compact(['student','gen','generation']));
@@ -160,6 +164,10 @@ class AdminController extends Controller
         $generation = Generation::whereIn('id',$generations)
             ->orderBy('year')
             ->pluck('year','id');
+        if($request->generation_id == NULL){
+            $alumni = Inactivestudent::orderBy('generation_id')->get();
+            return view('dashboards.admin.alumni', compact(['alumni','generation']));
+        }
         $gen = Generation::find($request->generation_id);
         $alumni = $gen->inactivestudents()->get();
         return view('dashboards.admin.alumni', compact(['alumni','gen','generation']));
@@ -173,5 +181,35 @@ class AdminController extends Controller
     public function alumniRequests(){
         $requests = Alumnirequest::orderBy('confirm')->orderBy('created_at', 'DESC')->get();
         return view('dashboards.admin.alumni-request', compact(['requests']));
+    }
+
+    public function acceptStudentRequests(Studentrequest $studentrequest){
+        $studentrequest->update(['confirm' => 1]);
+        return redirect()->route('admin.student.request')->with('accepted','success');
+    }
+
+    public function rejectStudentRequests(Studentrequest $studentrequest){
+        $studentrequest->update(['confirm' => 2]);
+        return redirect()->route('admin.student.request')->with('rejected','success');
+    }
+
+    public function deleteStudentRequests(Studentrequest $studentrequest){
+        $studentrequest->delete();
+        return redirect()->route('admin.student.request')->with('deleted','success');
+    }
+
+    public function acceptAlumniRequests(Alumnirequest $alumnirequest){
+        $alumnirequest->update(['confirm' => 1]);
+        return redirect()->route('admin.alumni.request')->with('accepted','success');
+    }
+
+    public function rejectAlumniRequests(Alumnirequest $alumnirequest){
+        $alumnirequest->update(['confirm' => 2]);
+        return redirect()->route('admin.alumni.request')->with('rejected','success');
+    }
+
+    public function deleteAlumniRequests(Alumnirequest $alumnirequest){
+        $alumnirequest->delete();
+        return redirect()->route('admin.alumni.request')->with('deleted','success');
     }
 }

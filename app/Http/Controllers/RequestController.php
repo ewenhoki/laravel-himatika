@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activestudent;
 use Illuminate\Http\Request;
 use App\Models\Generation;
 use App\Models\Studentrequest;
 use App\Models\Alumnirequest;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class RequestController extends Controller
 {
@@ -67,5 +69,37 @@ class RequestController extends Controller
         ]);
         Alumnirequest::create($request->all());
         return redirect()->route('alumni.request')->with('sent','success');
+    }
+
+    public function studentDetail(Studentrequest $studentrequest){
+        if($studentrequest->confirm != 1 || $studentrequest->user->id != auth()->user()->id){
+            return redirect()->route('student.request')->with('denied','fail');
+        }
+        $count = 0;
+        foreach($studentrequest->getAttributes() as $key => $value){
+            if($key != 'id' && $key != 'user_id' && $key != 'generation_id' && $key != 'reason' && $key != 'confirm'){
+                if($value == 1){
+                    $count++;
+                }
+            }
+        }
+        $student = $studentrequest->generation->activestudents()->get();
+        return view('dashboards.request.student-detail', compact(['student','count','studentrequest']));
+    }
+
+    public function alumniDetail(Alumnirequest $alumnirequest){
+        if($alumnirequest->confirm != 1 || $alumnirequest->user->id != auth()->user()->id){
+            return redirect()->route('alumni.request')->with('denied','fail');
+        }
+        $count = 0;
+        foreach($alumnirequest->getAttributes() as $key => $value){
+            if($key != 'id' && $key != 'user_id' && $key != 'generation_id' && $key != 'reason' && $key != 'confirm'){
+                if($value == 1){
+                    $count++;
+                }
+            }
+        }
+        $alumni = $alumnirequest->generation->inactivestudents()->get();
+        return view('dashboards.request.alumni-detail', compact(['alumni','count','alumnirequest']));
     }
 }

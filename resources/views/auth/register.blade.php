@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('asset_login/css/fontawesome-all.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('asset_login/css/iofrm-style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('asset_login/css/iofrm-theme20.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset_dashboard/css/yearpicker.css') }}">
     <style>
         .specialspace{
             margin-bottom: 15px;
@@ -43,7 +44,7 @@
                         {!! Form::open(['route' => 'register','class'=>'form-valide']) !!}
                             {!! Form::text('npm', old('npm'), ['id'=>'npm','class'=>'form-control','placeholder'=>'NPM','required']) !!}
                             {!! Form::text('name', old('name'), ['id'=>'name','class'=>'form-control'.($errors->has('name') ? ' is-invalid' : null),'placeholder'=>'Nama Lengkap','required']) !!}
-                            {!! Form::number('generation', old('angkatan'), ['class'=>'form-control','placeholder'=>'Angkatan','required']) !!}
+                            {!! Form::number('generation', old('angkatan'), ['class'=>'form-control','placeholder'=>'Angkatan','id'=>'year','required']) !!}
                             {!! Form::email('email', old('email'), ['id'=>'email','class'=>'form-control'.($errors->has('email') ? ' is-invalid' : null),'placeholder'=>'E-mail','required']) !!}
                             {!! Form::password('password', ['id'=>'password','class'=>'form-control'.($errors->has('password') ? ' is-invalid' : null),'placeholder'=>'Kata Sandi','required']) !!}
                             {!! Form::password('password_confirmation', ['id'=>'password-confirm','class'=>'form-control','placeholder'=>'Konfirmasi Kata Sandi','required']) !!}
@@ -68,11 +69,15 @@
 <script src="{{ asset('asset_login/js/popper.min.js') }}"></script>
 <script src="{{ asset('asset_login/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('asset_login/js/main.js') }}"></script>
+<script src="{{ asset('asset_dashboard/js/yearpicker.js') }}"></script>
 <!-- Masked Input -->
 <script src="{{ asset('asset_login/js/jquery.maskedinput.js') }}" type="text/javascript"></script>
 <!-- Jquery Validation -->
 <script src="{{ asset('asset_dashboard/vendor/jquery-validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('asset_login/js/register-init.js') }}"></script>></script>
+<script>
+    $('#year').yearpicker();
+</script>
 </body>
 </html>
 

@@ -37,7 +37,7 @@
                                     <div class="accordion__body--text text-center">
                                         @if($request->confirm == 1)
                                         <p>Permintaan database disetujui, akses database dengan menekan tombol dibawah ini.</p>
-                                        <a href="#" class="btn btn-info btn-sm">Lihat Database</a>
+                                        <a href="{{ route('detail.alumni.request', ['alumnirequest'=>$request->id]) }}" class="btn btn-info btn-sm">Lihat Database</a>
                                         @elseif($request->confirm == NULL)
                                         <p>Menunggu persetujuan admin.</p>
                                         @else
@@ -257,6 +257,28 @@
         text: "Belum memilih angkatan.",   
         type: "error",    
         confirmButtonText: "Tutup",     
+    });
+</script>
+@endif
+@if(session('denied'))
+<script>
+    toastr.error("Anda tidak memiliki akses!", "Gagal", {
+        timeOut: 5e3,
+        closeButton: !0,
+        debug: !1,
+        newestOnTop: !0,
+        progressBar: !0,
+        positionClass: "toast-top-right",
+        preventDuplicates: !0,
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut",
+        tapToDismiss: !1
     });
 </script>
 @endif

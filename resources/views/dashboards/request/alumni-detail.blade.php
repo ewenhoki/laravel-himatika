@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('header')
-<title>Database Alumni</title>
+<title>Alumni {{ $alumnirequest->generation->year }}</title>
 @endsection
 
 @section('header-title')
-    Database Alumni
+    Database Alumni {{ $alumnirequest->generation->year }}
 @endsection
 
 @section('content')
@@ -13,8 +13,9 @@
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Database</a></li>
-                <li class="breadcrumb-item active"><a href="{{ route('admin.alumni.data') }}">Alumni</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Permintaan Database</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Alumni</a></li>
+                <li class="breadcrumb-item active"><a href="{{ route('detail.alumni.request', ['alumnirequest'=>$alumnirequest->id]) }}">Angkatan {{ $alumnirequest->generation->year }}</a></li>
             </ol>
         </div>
         <!-- row -->
@@ -22,69 +23,77 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Pilih Angkatan Pada Form Berikut</h4>
-                    </div>
-                    <div class="card-body">
-                        {!! Form::open(['route' => 'admin.alumni.detail']) !!}
-                            <div class="form-row">
-                                <label class="col-sm-3 col-form-label">Angkatan</label>
-                                <div class="form-group col-sm-3">
-                                    @if(isset($gen))
-                                    {{ Form::select('generation_id', $generation, $gen->id, ['class'=>'dropdown bootstrap-select form-control default-select','tabindex'=>'-98','placeholder'=>'Semua Angkatan']) }}
-                                    @else
-                                    {{ Form::select('generation_id', $generation, '',['class'=>'dropdown bootstrap-select form-control default-select','tabindex'=>'-98','placeholder'=>'Semua Angkatan']) }}
-                                    @endif
-                                </div>
-                                <div class="form-group col-sm-3">
-                                    <input class="btn btn-success" type="submit" value="Pilih Angkatan">
-                                </div>
-                            </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div>
-            @isset($alumni)
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        @if(isset($gen))
-                        <h4 class="card-title">Database Alumni Angkatan {{ $gen->year }}</h4>
-                        @else
-                        <h4 class="card-title">Database Alumni Semua Angkatan</h4>
-                        @endif
+                        <h4 class="card-title">Database Alumni Angkatan {{ $alumnirequest->generation->year }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example" class="display min-w850" style="width:300%">
+                            <table id="alumni" class="display min-w850" style="width:{{ ($count*12 < 100) ? '100' : $count*12 }}%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        @if ($alumnirequest->avatar==1)
                                         <th>Foto</th>
+                                        @endif
                                         <th>Nama</th>
                                         <th>NPM</th>
+                                        @if ($alumnirequest->email==1)
                                         <th>Email</th>
+                                        @endif
+                                        @if ($alumnirequest->phone==1)
                                         <th>Telepon</th>
+                                        @endif
+                                        @if ($alumnirequest->gender==1)
                                         <th>Jenis Kelamin</th>
+                                        @endif
+                                        @if ($alumnirequest->birth_data==1)
                                         <th>Tempat, Tanggal Lahir</th>
+                                        @endif
+                                        @if ($alumnirequest->blood_group==1)
                                         <th>Golongan Darah</th>
+                                        @endif
+                                        @if ($alumnirequest->religion==1)
                                         <th>Agama</th>
+                                        @endif
+                                        @if ($alumnirequest->address==1)
                                         <th>Alamat</th>
+                                        @endif
+                                        @if ($alumnirequest->interest==1)
                                         <th>Bidang Minat</th>
+                                        @endif
+                                        @if ($alumnirequest->line==1)
                                         <th>ID Line</th>
+                                        @endif
+                                        @if ($alumnirequest->instagram==1)
                                         <th>Instagram</th>
+                                        @endif
+                                        @if ($alumnirequest->twitter==1)
                                         <th>Twitter</th>
+                                        @endif
+                                        @if ($alumnirequest->facebook==1)
                                         <th>Facebook</th>
+                                        @endif
+                                        @if ($alumnirequest->linkedin==1)
                                         <th>LinkedIn</th>
+                                        @endif
+                                        @if ($alumnirequest->salary==1)
                                         <th>Gaji</th>
+                                        @endif
+                                        @if ($alumnirequest->education==1)
                                         <th>Pendidikan Lanjut</th>
+                                        @endif
+                                        @if ($alumnirequest->job==1)
                                         <th>Riwayat Pekerjaan</th>
+                                        @endif
+                                        @if ($alumnirequest->certification==1)
                                         <th>Sertifikasi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($alumni as $key=>$al)
                                     <tr>
                                         <td>{{ $key+1 }}</td>
+                                        @if ($alumnirequest->avatar==1)
                                         <td>
                                             @if($al->user->avatar!=NULL)
                                                 @if(file_exists(public_path('user_image/'.$al->user->avatar)))
@@ -96,10 +105,16 @@
                                             <img src="{{ asset('user_image/profile-default.png') }}" class="rounded-circle" width="35" alt=""/>
                                             @endif
                                         </td>
+                                        @endif
                                         <td>{{ $al->user->name }}</td>
                                         <td>{{ $al->user->npm }}</td>
+                                        @if ($alumnirequest->email==1)
                                         <td>{{ $al->user->email }}</td>
+                                        @endif
+                                        @if ($alumnirequest->phone==1)
                                         <td>{{ $al->user->phone }}</td>
+                                        @endif
+                                        @if ($alumnirequest->gender==1)
                                         <td>
                                             @if($al->user->gender == 'L')
                                             <span class="badge light badge-success"><i class="fa fa-circle text-success mr-1"></i>Laki-laki</span>
@@ -107,6 +122,8 @@
                                             <span class="badge light badge-danger"><i class="fa fa-circle text-danger mr-1"></i>Perempuan</span>
                                             @endif
                                         </td>
+                                        @endif
+                                        @if ($alumnirequest->birth_data==1)
                                         <td>
                                             @if($al->user->birth_place != NULL || $al->user->birth_date != NULL)
                                                 {{ $al->user->birth_place.', '.\Carbon\Carbon::parse($al->user->birth_date)->locale('id')->isoFormat('D MMMM Y') }}
@@ -114,16 +131,38 @@
                                                 -
                                             @endif
                                         </td>
+                                        @endif
+                                        @if ($alumnirequest->blood_group==1)
                                         <td>{{ ($al->user->blood_group!=NULL) ? $al->user->blood_group : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->religion==1)
                                         <td>{{ ($al->user->religion!=NULL) ? $al->user->religion : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->address==1)
                                         <td>{{ ($al->user->address!=NULL) ? $al->user->address : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->interest==1)
                                         <td>{{ ($al->interest!=NULL) ? $al->interest : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->line==1)
                                         <td>{{ ($al->line!=NULL) ? $al->line : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->instagram==1)
                                         <td>{{ ($al->instagram!=NULL) ? $al->instagram : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->twitter==1)
                                         <td>{{ ($al->twitter!=NULL) ? $al->twitter : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->facebook==1)
                                         <td>{{ ($al->facebook!=NULL) ? $al->facebook : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->linkedin==1)
                                         <td>{{ ($al->linkedin!=NULL) ? $al->linkedin : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->salary==1)
                                         <td>{{ ($al->salary!=NULL) ? $al->salary : '-' }}</td>
+                                        @endif
+                                        @if ($alumnirequest->education==1)
                                         <td>
                                             @if($al->educations()->first())
                                                 @foreach ($al->educations()->get() as $edu)
@@ -133,6 +172,8 @@
                                                 -
                                             @endif
                                         </td>
+                                        @endif
+                                        @if ($alumnirequest->job==1)
                                         <td>
                                             @if($al->jobs()->first())
                                                 @foreach ($al->jobs()->get() as $job)
@@ -142,6 +183,8 @@
                                                 -
                                             @endif
                                         </td>
+                                        @endif
+                                        @if ($alumnirequest->certification==1)
                                         <td>
                                             @if($al->certifications()->first())
                                                 @foreach ($al->certifications()->get() as $cer)
@@ -151,6 +194,7 @@
                                                 -
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>    
                                     @endforeach
                                 </tbody>
@@ -159,58 +203,44 @@
                     </div>
                 </div>
             </div>
-            @endisset
         </div>
     </div>
 </div>
 @endsection
 
 @section('footer')
-@isset($alumni)
 <script>
-    $('#example').DataTable({
+     $('#alumni').DataTable({
         dom: 'Blfrtip',
         buttons: [
             'copyHtml5',
             {
                 extend : 'csv',
-                exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
-                },
                 title : function() {
-                    return "Database Alumni {{ (isset($gen)) ? $gen->year : 'Semua Angkatan'}}";
+                    return "Database Mahasiswa {{ $alumnirequest->generation->year }}";
                 },
                 titleAttr : 'CSV'
             },
             {
                 extend : 'excel',
-                exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
-                },
                 title : function() {
-                    return "Database Alumni {{ (isset($gen)) ? $gen->year : 'Semua Angkatan'}}";
+                    return "Database Mahasiswa {{ $alumnirequest->generation->year }}";
                 },
                 titleAttr : 'Excel'
             },
             {
                 extend : 'pdf',
-                exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
-                },
                 title : function() {
-                    return "Database Alumni {{ (isset($gen)) ? $gen->year : 'Semua Angkatan'}}";
+                    return "Database Mahasiswa {{ $alumnirequest->generation->year }}";
                 },
                 orientation : 'landscape',
-                pageSize : 'A2',
+                pageSize : '{{ ($count<=12) ? "A4" : "A2" }}',
                 titleAttr : 'PDF'
             },
             {
                 extend : 'print',
-                exportOptions: {
-                    columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
-                },
                 title : function() {
-                    return "Database Alumni {{ (isset($gen)) ? $gen->year : 'Semua Angkatan'}}";
+                    return "Database Mahasiswa {{ $alumnirequest->generation->year }}";
                 },
                 customize: function(win){
                     var last = null;
@@ -252,5 +282,4 @@
         }
     });
 </script>
-@endisset
 @endsection

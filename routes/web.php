@@ -35,9 +35,11 @@ Route::group(['middleware' => ['auth','verified','checkrole:A,M,Admin']], functi
     Route::post('/user/crop', [UploadController::class, 'crop'])->name('user.crop');
 });
 
-Route::group(['middleware' => ['auth','verified','checkrole:A,M']], function(){
+Route::group(['middleware' => ['auth','verified','checkstatus','checkrole:A,M']], function(){
     Route::get('/student/request/database', [RequestController::class, 'studentRequest'])->name('student.request');
     Route::get('/alumni/request/database', [RequestController::class, 'alumniRequest'])->name('alumni.request');
+    Route::get('/student/request/view/{studentrequest}', [RequestController::class, 'studentDetail'])->name('detail.student.request');
+    Route::get('/alumni/request/view/{alumnirequest}', [RequestController::class, 'alumniDetail'])->name('detail.alumni.request');
     Route::post('/student/request/database', [RequestController::class, 'addStudentRequest'])->name('request.student.post');
     Route::post('/alumni/request/database', [RequestController::class, 'addAlumniRequest'])->name('request.alumni.post');
 });
@@ -53,13 +55,19 @@ Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function()
     Route::get('/admin/database/alumni', [AdminController::class, 'alumniData'])->name('admin.alumni.data');
     Route::get('/admin/database/student/request', [AdminController::class, 'studentRequests'])->name('admin.student.request');
     Route::get('/admin/database/alumni/request', [AdminController::class, 'alumniRequests'])->name('admin.alumni.request');
+    Route::get('/admin/request/student/accept/{studentrequest}', [AdminController::class, 'acceptStudentRequests'])->name('admin.request.student.accept');
+    Route::get('/admin/request/student/reject/{studentrequest}', [AdminController::class, 'rejectStudentRequests'])->name('admin.request.student.reject');
+    Route::get('/admin/request/student/delete/{studentrequest}', [AdminController::class, 'deleteStudentRequests'])->name('admin.request.student.delete');
+    Route::get('/admin/request/alumni/accept/{alumnirequest}', [AdminController::class, 'acceptAlumniRequests'])->name('admin.request.alumni.accept');
+    Route::get('/admin/request/alumni/reject/{alumnirequest}', [AdminController::class, 'rejectAlumniRequests'])->name('admin.request.alumni.reject');
+    Route::get('/admin/request/alumni/delete/{alumnirequest}', [AdminController::class, 'deleteAlumniRequests'])->name('admin.request.alumni.delete');
     Route::post('/admin/profile', [AdminController::class, 'update'])->name('admin.profile.edit');
     Route::post('/admin/password', [AdminController::class, 'updatePassword'])->name('admin.password.edit');
     Route::post('/admin/database/student', [AdminController::class, 'studentDetail'])->name('admin.student.detail');
     Route::post('/admin/database/alumni', [AdminController::class, 'alumniDetail'])->name('admin.alumni.detail');
 });
 
-Route::group(['middleware' => ['auth','verified','checkrole:A']], function(){
+Route::group(['middleware' => ['auth','verified','checkstatus','checkrole:A']], function(){
     Route::get('/alumni/dashboard', [AlumniController::class, 'index'])->name('alumni.index');
     Route::get('/alumni/education/delete/{education}', [AlumniController::class, 'deleteEducation'])->name('alumni.delete.education');
     Route::get('/alumni/job/delete/{job}', [AlumniController::class, 'deleteJob'])->name('alumni.delete.job');
@@ -74,7 +82,7 @@ Route::group(['middleware' => ['auth','verified','checkrole:A']], function(){
     Route::post('/alumni/certification/update', [AlumniController::class, 'editCertification'])->name('alumni.certification.edit');
 });
 
-Route::group(['middleware' => ['auth','verified','checkrole:M']], function(){
+Route::group(['middleware' => ['auth','verified','checkstatus','checkrole:M']], function(){
     Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.index');
     Route::get('/student/organization/delete/{organization}', [StudentController::class, 'deleteOrganization'])->name('student.delete.organization');
     Route::get('/student/committee/delete/{committee}', [StudentController::class, 'deleteCommittee'])->name('student.delete.committee');

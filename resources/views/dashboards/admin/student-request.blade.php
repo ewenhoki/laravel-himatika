@@ -33,10 +33,11 @@
                                         <th>Role</th>
                                         <th>Nama</th>
                                         <th>NPM</th>
-                                        <th style="width:20%">Keperluan</th>
+                                        <th style="width:15%">Keperluan</th>
                                         <th>Angkatan</th>
                                         <th style="width:18%">Data yang Diminta</th>
                                         <th>Waktu Request</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -127,8 +128,21 @@
                                         </td>
                                         <td>{{ $request->created_at }}</td>
                                         <td>
-                                            <a href="javascript:void(0)" title="Kirim" nama="Nama Panjang" class="btn btn-success shadow btn-xs sharp accept"><i class="fa fa-check"></i></a>
-                                            <a href="javascript:void(0)" title="Tolak" nama="Nama Panjang" class="btn btn-danger shadow btn-xs sharp reject"><i class="fa fa-times"></i></a>
+                                            @if ($request->confirm == 1)
+                                            <a class="btn btn-success light btn-xs mb-1">Disetujui</a> 
+                                            @elseif ($request->confirm == 2)
+                                            <a class="btn btn-danger light btn-xs mb-1">Ditolak</a> 
+                                            @else
+                                            <a class="btn btn-light light btn-xs mb-1">Menunggu</a> 
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($request->confirm == NULL)
+                                            <a href="javascript:void(0)" title="Kirim" request-id="{{ $request->id }}" nama="{{ $request->user->name }}" class="btn btn-success shadow btn-xs sharp accept"><i class="fa fa-check"></i></a>
+                                            <a href="javascript:void(0)" title="Tolak" request-id="{{ $request->id }}" nama="{{ $request->user->name }}" class="btn btn-danger shadow btn-xs sharp reject"><i class="fa fa-times"></i></a>
+                                            @elseif ($request->confirm == 1 || $request->confirm == 2)
+                                            <a href="javascript:void(0)" title="Hapus" request-id="{{ $request->id }}" nama="{{ $request->user->name }}" class="btn btn-danger shadow btn-xs sharp deletereq"><i class="fa fa-trash"></i></a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -145,6 +159,63 @@
 
 @section('footer')
     <script>
+        $('.accept').click(function(){
+            var request_id = $(this).attr('request-id');
+            var nama = $(this).attr('nama');
+            var url = "{{ route('admin.request.student.accept', '') }}"+"/"+request_id;
+            swal({   
+                title: "Setuju ?",   
+                text: "Beri akses database ke user dengan nama "+nama+" ?",  
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Ya",   
+                cancelButtonText: "Tidak",   
+            })
+            .then(function(WillDelete){
+                if(WillDelete.value){
+                    window.location = url;
+                }
+            });
+        });
+        $('.reject').click(function(){
+            var request_id = $(this).attr('request-id');
+            var nama = $(this).attr('nama');
+            var url = "{{ route('admin.request.student.reject', '') }}"+"/"+request_id;
+            swal({   
+                title: "Tolak ?",   
+                text: "Tolak permintaan user dengan nama "+nama+" ?",  
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Ya",   
+                cancelButtonText: "Tidak",   
+            })
+            .then(function(WillDelete){
+                if(WillDelete.value){
+                    window.location = url;
+                }
+            });
+        });
+        $('.deletereq').click(function(){
+            var request_id = $(this).attr('request-id');
+            var nama = $(this).attr('nama');
+            var url = "{{ route('admin.request.student.delete', '') }}"+"/"+request_id;
+            swal({   
+                title: "Hapus ?",   
+                text: "Hapus permintaan user dengan nama "+nama+" ?",  
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Ya",   
+                cancelButtonText: "Tidak",   
+            })
+            .then(function(WillDelete){
+                if(WillDelete.value){
+                    window.location = url;
+                }
+            });
+        });
         $('#studentrequest').DataTable({
             "language": {
                 "search": "Cari",
@@ -160,4 +231,70 @@
             }
         });
     </script>
+    @if(session('accepted'))
+    <script>
+        toastr.success("Permintaan berhasil disetujui!", "Berhasil", {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-top-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+        });
+    </script>
+    @endif
+    @if(session('rejected'))
+    <script>
+        toastr.success("Permintaan berhasil ditolak!", "Berhasil", {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-top-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+        });
+    </script>
+    @endif
+    @if(session('deleted'))
+    <script>
+        toastr.success("Permintaan berhasil dihapus!", "Berhasil", {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-top-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+        });
+    </script>
+    @endif
 @endsection
