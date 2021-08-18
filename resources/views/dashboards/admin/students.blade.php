@@ -2,6 +2,7 @@
 
 @section('header')
 <title>Database Mahasiswa</title>
+<link href="{{ asset('asset_dashboard/vendor/lightgallery/css/lightgallery.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('header-title')
@@ -90,15 +91,21 @@
                                     <tr>
                                         <td>{{ $key+1 }}</td>
                                         <td>
+                                            <div class="lightgallery">
                                             @if($st->user->avatar!=NULL)
                                                 @if(file_exists(public_path('user_image/'.$st->user->avatar)))
+                                                <a href="{{ asset('user_image/'.$st->user->avatar) }}" data-exthumbimage="{{ asset('user_image/'.$st->user->avatar) }}" data-src="{{ asset('user_image/'.$st->user->avatar) }}">
                                                 <img src="{{ asset('user_image/'.$st->user->avatar) }}" class="rounded-circle" width="35" alt=""/>
                                                 @else
+                                                <a href="{{ asset('user_image/profile-default.png') }}" data-exthumbimage="{{ asset('user_image/profile-default.png') }}" data-src="{{ asset('user_image/profile-default.png') }}">
                                                 <img src="{{ asset('user_image/profile-default.png') }}" class="rounded-circle" width="35" alt=""/>
                                                 @endif
                                             @else
+                                            <a href="{{ asset('user_image/profile-default.png') }}" data-exthumbimage="{{ asset('user_image/profile-default.png') }}" data-src="{{ asset('user_image/profile-default.png') }}">
                                             <img src="{{ asset('user_image/profile-default.png') }}" class="rounded-circle" width="35" alt=""/>
                                             @endif
+                                            </a>
+                                            </div>
                                         </td>
                                         <td>{{ $st->user->name }}</td>
                                         <td>{{ $st->user->npm }}</td>
@@ -189,7 +196,13 @@
 
 @section('footer')
 @isset($student)
+<script src="{{ asset('asset_dashboard/vendor/lightgallery/js/lightgallery-all.min.js') }}"></script>
 <script>
+    $('.lightgallery').lightGallery({
+        loop:true,
+        thumbnail:true,
+        exThumbImage: 'data-exthumbimage'
+    });
     $('#example').DataTable({
         dom: 'Blfrtip',
         buttons: [

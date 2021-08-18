@@ -21,9 +21,7 @@ use App\Mail\SendMail;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/sendmail', function(){
-    return new SendMail;
-});
+
 Route::get('/', [SiteController::class, 'login'])->name('redirect.login');
 
 Auth::routes(['verify' => true]);
@@ -58,6 +56,7 @@ Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function()
     Route::get('/admin/switch_alumni/{user}', [AdminController::class, 'switchAlumni'])->name('admin.switch.alumni');
     Route::get('/admin/database/student', [AdminController::class, 'studentData'])->name('admin.student.data');
     Route::get('/admin/database/alumni', [AdminController::class, 'alumniData'])->name('admin.alumni.data');
+    Route::get('/admin/database/entrepreneur', [AdminController::class, 'entreData'])->name('admin.entrepreneur.data');
     Route::get('/admin/database/student/request', [AdminController::class, 'studentRequests'])->name('admin.student.request');
     Route::get('/admin/database/alumni/request', [AdminController::class, 'alumniRequests'])->name('admin.alumni.request');
     Route::get('/admin/request/student/accept/{studentrequest}', [AdminController::class, 'acceptStudentRequests'])->name('admin.request.student.accept');

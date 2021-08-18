@@ -26,6 +26,7 @@
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.student.data') }}">Mahasiswa</a></li>
                     <li><a href="{{ route('admin.alumni.data') }}">Alumni</a></li>
+                    <li><a href="{{ route('admin.entrepreneur.data') }}">Entrepreneur</a></li>
                 </ul>
             </li>
             <li><a href="{{ route('admin.profile') }}" class="ai-icon" aria-expanded="false" title="Pengaturan Akun">

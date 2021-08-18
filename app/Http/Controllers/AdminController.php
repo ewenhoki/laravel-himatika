@@ -15,6 +15,7 @@ use App\Models\Alumnirequest;
 use App\Models\Webstatus;
 use App\Mail\AcceptMail;
 use App\Mail\RejectMail;
+use App\Models\Business;
 
 class AdminController extends Controller
 {
@@ -84,11 +85,51 @@ class AdminController extends Controller
     public function deleteUser(User $user){
         if($user->role == 'A'){
             $generation = Generation::find($user->inactivestudent->generation_id);
+            if($user->inactivestudent->educations()->first()){
+                $user->inactivestudent->educations()->delete();
+            }
+            if($user->inactivestudent->jobs()->first()){
+                $user->inactivestudent->jobs()->delete();
+            }
+            if($user->inactivestudent->certifications()->first()){
+                $user->inactivestudent->certifications()->delete();
+            }
             $user->inactivestudent->delete();
         }
         else{
             $generation = Generation::find($user->activestudent->generation_id);
+            if($user->activestudent->organizations()->first()){
+                $user->activestudent->organizations()->delete();
+            }
+            if($user->activestudent->committees()->first()){
+                $user->activestudent->committees()->delete();
+            }
+            if($user->activestudent->seminars()->first()){
+                $user->activestudent->seminars()->delete();
+            }
+            if($user->activestudent->achievments()->first()){
+                $user->activestudent->achievments()->delete();
+            }
+            if($user->activestudent->business){
+                $user->activestudent->business->delete();
+            }
             $user->activestudent->delete();
+        }
+        if($user->studentrequests()->first()){
+            $user->studentrequests()->delete();
+        }
+        if($user->alumnirequests()->first()){
+            $user->alumnirequests()->delete();
+        }
+        if($generation->activestudents()->count() == 0){
+            if($generation->studentrequests()->first()){
+                $generation->studentrequests()->delete();
+            }
+        }
+        if($generation->inactivestudents()->count() == 0){
+            if($generation->alumnirequests()->first()){
+                $generation->alumnirequests()->delete();
+            }
         }
         if($generation->activestudents()->count() == 0 && $generation->inactivestudents()->count() == 0){
             $generation->delete();
@@ -99,7 +140,22 @@ class AdminController extends Controller
 
     public function switchStudent(User $user){
         $generation = $user->inactivestudent->generation_id;
+        if($user->inactivestudent->educations()->first()){
+            $user->inactivestudent->educations()->delete();
+        }
+        if($user->inactivestudent->jobs()->first()){
+            $user->inactivestudent->jobs()->delete();
+        }
+        if($user->inactivestudent->certifications()->first()){
+            $user->inactivestudent->certifications()->delete();
+        }
         $user->inactivestudent->delete();
+        $gen = Generation::find($generation);
+        if($gen->inactivestudents()->count() == 0){
+            if($gen->alumnirequests()->first()){
+                $gen->alumnirequests()->delete();
+            }
+        }
         $activestudent = Activestudent::create([
             'user_id' => $user->id,
             'generation_id' => $generation,
@@ -111,7 +167,28 @@ class AdminController extends Controller
 
     public function switchAlumni(User $user){
         $generation = $user->activestudent->generation_id;
+        if($user->activestudent->organizations()->first()){
+            $user->activestudent->organizations()->delete();
+        }
+        if($user->activestudent->committees()->first()){
+            $user->activestudent->committees()->delete();
+        }
+        if($user->activestudent->seminars()->first()){
+            $user->activestudent->seminars()->delete();
+        }
+        if($user->activestudent->achievments()->first()){
+            $user->activestudent->achievments()->delete();
+        }
+        if($user->activestudent->business){
+            $user->activestudent->business->delete();
+        }
         $user->activestudent->delete();
+        $gen = Generation::find($generation);
+        if($gen->activestudents()->count() == 0){
+            if($gen->studentrequests()->first()){
+                $gen->studentrequests()->delete();
+            }
+        }
         $inactivestudent = Inactivestudent::create([
             'user_id' => $user->id,
             'generation_id' => $generation,
@@ -187,6 +264,11 @@ class AdminController extends Controller
         $gen = Generation::find($request->generation_id);
         $alumni = $gen->inactivestudents()->get();
         return view('dashboards.admin.alumni', compact(['alumni','gen','generation']));
+    }
+
+    public function entreData(){
+        $entre = Business::all();
+        return view('dashboards.admin.entrepreneur',compact(['entre']));
     }
 
     public function studentRequests(){
