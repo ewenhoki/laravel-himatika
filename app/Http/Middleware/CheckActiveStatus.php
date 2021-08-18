@@ -19,7 +19,7 @@ class CheckActiveStatus
     {
         $value = Webstatus::find(1); // assuming value is either 0 or 1
         if ($value->status != 1) {
-            return redirect('500'); // view with 404 display error
+            return redirect()->route('status.locked'); // view with 404 display error
         }
 
         return $next($request);

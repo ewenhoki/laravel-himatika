@@ -94,7 +94,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
-	<script src="{{ asset('asset_dashboard/js/master-init.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('asset_dashboard/vendor/toastr/js/toastr.min.js') }}"></script>
     <script>
@@ -116,6 +115,27 @@
             });
         });
     </script>
+    @if(auth()->user()->role == 'Admin')
+    <script>
+    $('.shutdown').click(function(){
+        var url = "{{ route('switch.status') }}";
+        swal({   
+            title: "Ganti Status Web ?",   
+            text: "Klik tombol yang sama untuk mengubah status aktif web lagi.",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Ya",   
+            cancelButtonText: "Tidak",   
+        })
+        .then(function(WillDelete){
+            if(WillDelete.value){
+                window.location = url;
+            }
+        });
+    });
+    </script>
+    @endif
 	@yield('footer')
 </body>
 

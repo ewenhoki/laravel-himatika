@@ -11,6 +11,7 @@ use App\Models\Activestudent;
 use App\Models\Inactivestudent;
 use App\Models\Studentrequest;
 use App\Models\Alumnirequest;
+use App\Models\Webstatus;
 
 class AdminController extends Controller
 {
@@ -22,6 +23,18 @@ class AdminController extends Controller
         $alumni_request = Alumnirequest::whereNull('confirm')->count();
         $requests = $alumni_request + $student_request;
         return view('dashboards.admin.index', compact(['users','activestudent','inactivestudent','requests']));
+    }
+
+    public function switchStatus(){
+        $webstatus = Webstatus::find(1);
+        if($webstatus->status == 1){
+            $webstatus->status = 0;
+        }
+        else{
+            $webstatus->status = 1;
+        }
+        $webstatus->save();
+        return redirect()->route('admin.index')->with('changed','success');
     }
 
     public function profile(){

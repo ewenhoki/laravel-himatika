@@ -33,8 +33,11 @@
                 <ul class="navbar-nav header-right">
                     @if(auth()->user()->role == 'Admin')
                     <li class="nav-item dropdown notification_dropdown">
+                        @if(App\Models\Webstatus::find(1)->status == 1)
                         <span class="badge light badge-outline-success"><i class="fa fa-circle text-success mr-1"></i>Aktif</span>
-                        <!-- <span class="badge light badge-outline-danger"><i class="fa fa-circle text-danger mr-1"></i>Terkunci</span> -->
+                        @else
+                        <span class="badge light badge-outline-danger"><i class="fa fa-circle text-danger mr-1"></i>Terkunci</span>
+                        @endif
                     </li>
                     @endif
                     <li class="nav-item dropdown header-profile">

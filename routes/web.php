@@ -32,6 +32,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/dashboard', [SiteController::class, 'check'])->name('home');
 
 Route::group(['middleware' => ['auth','verified','checkrole:A,M,Admin']], function(){
+    Route::get('/locked', [SiteController::class, 'locked'])->name('status.locked');
     Route::post('/user/crop', [UploadController::class, 'crop'])->name('user.crop');
 });
 
@@ -45,6 +46,7 @@ Route::group(['middleware' => ['auth','verified','checkstatus','checkrole:A,M']]
 });
 
 Route::group(['middleware' => ['auth','verified','checkrole:Admin']], function(){
+    Route::get('/admin/switch/status', [AdminController::class, 'switchStatus'])->name('switch.status');
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
     Route::get('/admin/verification/{user}', [AdminController::class, 'verification'])->name('admin.verification');

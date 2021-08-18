@@ -21,4 +21,8 @@ class SiteController extends Controller
             return redirect()->route('student.index');
         }
     }
+
+    public function locked(){
+        return view('errors.locked');
+    }
 }
