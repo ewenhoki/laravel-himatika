@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Generation;
@@ -12,6 +13,8 @@ use App\Models\Inactivestudent;
 use App\Models\Studentrequest;
 use App\Models\Alumnirequest;
 use App\Models\Webstatus;
+use App\Mail\AcceptMail;
+use App\Mail\RejectMail;
 
 class AdminController extends Controller
 {
@@ -198,11 +201,19 @@ class AdminController extends Controller
 
     public function acceptStudentRequests(Studentrequest $studentrequest){
         $studentrequest->update(['confirm' => 1]);
+        $data = [
+            'info'=>'mahasiswa '.$studentrequest->generation->year, 
+        ];
+        Mail::to($studentrequest->user->email)->send(new AcceptMail($data));
         return redirect()->route('admin.student.request')->with('accepted','success');
     }
 
     public function rejectStudentRequests(Studentrequest $studentrequest){
         $studentrequest->update(['confirm' => 2]);
+        $data = [
+            'info'=>'mahasiswa '.$studentrequest->generation->year, 
+        ];
+        Mail::to($studentrequest->user->email)->send(new RejectMail($data));
         return redirect()->route('admin.student.request')->with('rejected','success');
     }
 
@@ -213,11 +224,19 @@ class AdminController extends Controller
 
     public function acceptAlumniRequests(Alumnirequest $alumnirequest){
         $alumnirequest->update(['confirm' => 1]);
+        $data = [
+            'info'=>'alumni '.$alumnirequest->generation->year, 
+        ];
+        Mail::to($alumnirequest->user->email)->send(new AcceptMail($data));
         return redirect()->route('admin.alumni.request')->with('accepted','success');
     }
 
     public function rejectAlumniRequests(Alumnirequest $alumnirequest){
         $alumnirequest->update(['confirm' => 2]);
+        $data = [
+            'info'=>'alumni '.$alumnirequest->generation->year, 
+        ];
+        Mail::to($alumnirequest->user->email)->send(new RejectMail($data));
         return redirect()->route('admin.alumni.request')->with('rejected','success');
     }
 

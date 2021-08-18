@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Activestudent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Generation;
 use App\Models\Studentrequest;
 use App\Models\Alumnirequest;
+use App\Mail\SendMail;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class RequestController extends Controller
@@ -37,7 +39,11 @@ class RequestController extends Controller
             'npm' => 1,
             'name'=> 1,
         ]);
-        Studentrequest::create($request->all());
+        $studentrequest = Studentrequest::create($request->all());
+        $data = [
+            'info'=>'mahasiswa '.$studentrequest->generation->year, 
+        ];
+        Mail::to(auth()->user()->email)->send(new SendMail($data));
         return redirect()->route('student.request')->with('sent','success');
     }
 
@@ -67,7 +73,11 @@ class RequestController extends Controller
             'npm' => 1,
             'name'=> 1,
         ]);
-        Alumnirequest::create($request->all());
+        $alumnirequest = Alumnirequest::create($request->all());
+        $data = [
+            'info'=>'alumni '.$alumnirequest->generation->year, 
+        ];
+        Mail::to(auth()->user()->email)->send(new SendMail($data));
         return redirect()->route('alumni.request')->with('sent','success');
     }
 

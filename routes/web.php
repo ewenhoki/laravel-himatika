@@ -9,6 +9,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\RequestController;
+use App\Mail\SendMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,9 @@ use App\Http\Controllers\RequestController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/sendmail', function(){
+    return new SendMail;
+});
 Route::get('/', [SiteController::class, 'login'])->name('redirect.login');
 
 Auth::routes(['verify' => true]);
